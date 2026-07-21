@@ -1,0 +1,79 @@
+name: deploy preview environment
+
+on:
+  push:
+    branches: [main]
+  repository_dispatch:
+    types: [core-main, base-main]
+  workflow_dispatch:
+
+concurrency:
+  group: patchwork-preview
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          path: site
+
+      - uses: actions/checkout@v7
+        with:
+          repository: inkandswitch/patchwork-next
+          ref: main
+          path: core
+
+      - uses: actions/checkout@v7
+        with:
+          repository: inkandswitch/patchwork-base
+          ref: main
+          path: base
+
+      - uses: pnpm/action-setup@v4
+        with:
+          run_install: false
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: pnpm
+          cache-dependency-path: |
+            site/pnpm-lock.yaml
+            core/pnpm-lock.yaml
+            base/pnpm-lock.yaml
+
+      - name: build core
+        working-directory: core
+        run: |
+          pnpm install --frozen-lockfile
+          pnpm --filter @inkandswitch/patchwork... build
+
+      - name: build base
+        working-directory: base
+        run: |
+          pnpm install --frozen-lockfile
+          node scripts/build-static.mjs --build --strict
+
+      - name: build site
+        working-directory: site
+        env:
+          PATCHWORK_CORE_DIR: ${{ github.workspace }}/core
+          PATCHWORK_BASE_DIR: ${{ github.workspace }}/base
+        run: |
+          pnpm install --frozen-lockfile
+          node scripts/environment.mjs link-core
+          pnpm build
+          node scripts/environment.mjs write-build-info
+
+      - name: deploy
+        working-directory: site
+        env:
+          NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
+          NETLIFY_SITE_ID: ${{ secrets.PREVIEW_NETLIFY_SITE_ID }}
+        run: pnpm exec netlify deploy --prod --dir dist
