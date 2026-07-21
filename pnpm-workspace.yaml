@@ -7,5 +7,5 @@ minimumReleaseAgeExclude:
   - '@inkandswitch/patchwork-filesystem@0.2.3'
   - '@inkandswitch/patchwork-providers@0.4.2'
   - '@inkandswitch/patchwork@0.1.0'
-  - '@inkandswitch/patchwork-e2e@0.1.0'
+  - '@inkandswitch/patchwork-e2e@0.1.0 || 0.1.1 || 0.1.2'
   - '@inkandswitch/patchwork-pkg-base@0.0.2'
