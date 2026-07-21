@@ -1,0 +1,12 @@
+[build]
+  publish = "dist"
+  command = "pnpm build"
+
+[[headers]]
+  for = "/*"
+  [headers.values]
+    Access-Control-Allow-Origin = "*"
+
+[build.environment]
+  NODE_VERSION = "24"
+  PNPM_VERSION = "11.15.1"
