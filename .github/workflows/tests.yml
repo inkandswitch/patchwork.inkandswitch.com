@@ -64,18 +64,18 @@ jobs:
         run: pnpm install --frozen-lockfile
 
       - name: install browser
-        run: pnpm --filter @inkandswitch/patchwork-e2e exec playwright install --with-deps ${{ matrix.browser }}
+        run: pnpm exec playwright install --with-deps ${{ matrix.browser }}
 
       - name: build the site
-        run: pnpm --filter "patchwork.inkandswitch.com..." build
+        run: pnpm build
 
       - name: run the e2e tests
-        run: pnpm --filter @inkandswitch/patchwork-e2e test:e2e --project=${{ matrix.browser }}
+        run: pnpm patchwork-e2e -- --project=${{ matrix.browser }}
 
       - name: upload the report
         if: ${{ !cancelled() }}
         uses: actions/upload-artifact@v4
         with:
           name: playwright-report-${{ matrix.browser }}
-          path: e2e/playwright-report
+          path: playwright-report
           retention-days: 7
