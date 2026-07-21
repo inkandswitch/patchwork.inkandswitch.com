@@ -4,8 +4,7 @@ import setup, {
   showLoadingAnimation,
 } from "@inkandswitch/patchwork";
 
-const DEFAULT_PACKAGE_LIST =
-  "https://base.pkg.patchwork.inkandswitch.com/modules.json";
+const DEFAULT_PACKAGE_LIST = "/modules.json";
 
 const packageListURL = (
   new URLSearchParams(location.search).get("system-package-list") ||
