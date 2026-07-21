@@ -65,7 +65,9 @@ jobs:
         run: pnpm install --frozen-lockfile
 
       - name: install browser
-        run: pnpm exec playwright install --with-deps ${{ matrix.browser }}
+        run: |
+          version=$(node -p "require('@inkandswitch/patchwork-e2e/package.json').dependencies['@playwright/test']")
+          pnpm dlx playwright@$version install --with-deps ${{ matrix.browser }}
 
       - name: build the site
         run: pnpm build
