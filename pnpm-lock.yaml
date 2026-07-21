@@ -10,7 +10,13 @@ importers:
       "@inkandswitch/patchwork":
         specifier: ^0.1.0
         version: 0.1.0(@types/node@20.19.43)(solid-js@1.9.14)(vite@7.3.6(@types/node@20.19.43))(ws@8.21.1)
+      "@inkandswitch/patchwork-pkg-base":
+        specifier: ^0.0.2
+        version: 0.0.2
     devDependencies:
+      "@inkandswitch/patchwork-e2e":
+        specifier: ^0.1.0
+        version: 0.1.0
       vite:
         specifier: ^7.3.5
         version: 7.3.6(@types/node@20.19.43)
@@ -671,6 +677,13 @@ packages:
       "@automerge/vanillajs":
         optional: true
 
+  "@inkandswitch/patchwork-e2e@0.1.0":
+    resolution:
+      {
+        integrity: sha512-zhJmpSJe5fRo62MVvLcnni9CxG1b6b5Ppnvd5IWE/pZqKdQLVZefTIbIk1cLv+y2o6jEO8nVowgNnauX6/hnmw==,
+      }
+    hasBin: true
+
   "@inkandswitch/patchwork-elements@4.0.2":
     resolution:
       {
@@ -700,6 +713,12 @@ packages:
     peerDependencies:
       "@automerge/automerge": "*"
       "@automerge/automerge-repo": "*"
+
+  "@inkandswitch/patchwork-pkg-base@0.0.2":
+    resolution:
+      {
+        integrity: sha512-42pRHbmSXlFydfsYHXkgXwJJDc9WjFn2jH1fAJdfJ6IZ/BSe+gJA0R1t94yTsqmAha/LehJo25oxozlZVI/6SA==,
+      }
 
   "@inkandswitch/patchwork-plugins@1.0.1":
     resolution:
@@ -768,6 +787,14 @@ packages:
         integrity: sha512-IYqDGiTXab6FniAgnSdZwgWbomxpy9FtYvLKs7wCUs2a8RkITG+DFGO1DM9cr+E3/RgADRpFjrKVaJ1z6sjtEg==,
       }
     engines: {node: ">= 20.19.0"}
+
+  "@playwright/test@1.59.1":
+    resolution:
+      {
+        integrity: sha512-PG6q63nQg5c9rIi4/Z5lR5IVF7yU5MqmKaPOe0HSc0O2cX1fPi96sUQu5j7eo4gKCkB2AnNGoWt7y4/Xx3Kcqg==,
+      }
+    engines: {node: ">=18"}
+    hasBin: true
 
   "@rollup/rollup-android-arm-eabi@4.62.2":
     resolution:
@@ -1106,6 +1133,14 @@ packages:
       picomatch:
         optional: true
 
+  fsevents@2.3.2:
+    resolution:
+      {
+        integrity: sha512-xiqMQR4xAeHTuB9uWm+fFRcIOgKBMiOBP+eXiyT7jsgVCq1bkVygt00oASowB7EdtpOHaaPgKt812P9ab+DDKA==,
+      }
+    engines: {node: ^8.16.0 || ^10.6.0 || >=11.0.0}
+    os: [darwin]
+
   fsevents@2.3.3:
     resolution:
       {
@@ -1155,6 +1190,22 @@ packages:
         integrity: sha512-RvwwcruNjI1ncT5xRakeyS9Lf8lcItv34KD+aif+VH9kduAyfYBipGh12274xtenIPZ119/R9BdTBa8gAwSh0A==,
       }
     engines: {node: ">=12"}
+
+  playwright-core@1.59.1:
+    resolution:
+      {
+        integrity: sha512-HBV/RJg81z5BiiZ9yPzIiClYV/QMsDCKUyogwH9p3MCP6IYjUFu/MActgYAvK0oWyV9NlwM3GLBjADyWgydVyg==,
+      }
+    engines: {node: ">=18"}
+    hasBin: true
+
+  playwright@1.59.1:
+    resolution:
+      {
+        integrity: sha512-C8oWjPR3F81yljW9o5OxcWzfh6avkVwDD2VYdwIGqTkl+OGFISgypqzfu7dOe4QNLL2aqcWBmI3PMtLIK233lw==,
+      }
+    engines: {node: ">=18"}
+    hasBin: true
 
   postcss@8.5.20:
     resolution:
@@ -1731,6 +1782,10 @@ snapshots:
       - supports-color
       - utf-8-validate
 
+  "@inkandswitch/patchwork-e2e@0.1.0":
+    dependencies:
+      "@playwright/test": 1.59.1
+
   "@inkandswitch/patchwork-elements@4.0.2(@automerge/automerge-repo@2.6.0-subduction.46)(@inkandswitch/patchwork-filesystem@0.2.3(@automerge/automerge-repo@2.6.0-subduction.46)(@automerge/automerge@3.3.2))(@inkandswitch/patchwork-plugins@1.0.1(@automerge/automerge-repo@2.6.0-subduction.46)(@automerge/automerge@3.3.2)(@inkandswitch/patchwork-filesystem@0.2.3(@automerge/automerge-repo@2.6.0-subduction.46)(@automerge/automerge@3.3.2)))(@inkandswitch/patchwork-providers@0.4.2(@automerge/automerge-repo@2.6.0-subduction.46))(solid-js@1.9.14)":
     dependencies:
       "@automerge/automerge-repo": 2.6.0-subduction.46
@@ -1751,6 +1806,8 @@ snapshots:
       resolve.exports: 2.0.3
     transitivePeerDependencies:
       - supports-color
+
+  "@inkandswitch/patchwork-pkg-base@0.0.2": {}
 
   "@inkandswitch/patchwork-plugins@1.0.1(@automerge/automerge-repo@2.6.0-subduction.46)(@automerge/automerge@3.3.2)(@inkandswitch/patchwork-filesystem@0.2.3(@automerge/automerge-repo@2.6.0-subduction.46)(@automerge/automerge@3.3.2))":
     dependencies:
@@ -1814,6 +1871,10 @@ snapshots:
   "@noble/hashes@1.8.0": {}
 
   "@noble/hashes@2.2.0": {}
+
+  "@playwright/test@1.59.1":
+    dependencies:
+      playwright: 1.59.1
 
   "@rollup/rollup-android-arm-eabi@4.62.2":
     optional: true
@@ -1978,6 +2039,9 @@ snapshots:
     optionalDependencies:
       picomatch: 4.0.5
 
+  fsevents@2.3.2:
+    optional: true
+
   fsevents@2.3.3:
     optional: true
 
@@ -1997,6 +2061,14 @@ snapshots:
   picocolors@1.1.1: {}
 
   picomatch@4.0.5: {}
+
+  playwright-core@1.59.1: {}
+
+  playwright@1.59.1:
+    dependencies:
+      playwright-core: 1.59.1
+    optionalDependencies:
+      fsevents: 2.3.2
 
   postcss@8.5.20:
     dependencies:
