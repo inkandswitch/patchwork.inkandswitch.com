@@ -7,7 +7,7 @@
     "@inkandswitch/patchwork-pkg-base": "^0.0.2"
   },
   "devDependencies": {
-    "@inkandswitch/patchwork-e2e": "^0.1.0",
+    "@inkandswitch/patchwork-e2e": "^0.1.2",
     "vite": "^7.3.5"
   },
   "scripts": {
