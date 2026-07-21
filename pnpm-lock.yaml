@@ -15,8 +15,8 @@ importers:
         version: 0.0.2
     devDependencies:
       "@inkandswitch/patchwork-e2e":
-        specifier: ^0.1.0
-        version: 0.1.0
+        specifier: ^0.1.2
+        version: 0.1.2
       vite:
         specifier: ^7.3.5
         version: 7.3.6(@types/node@20.19.43)
@@ -677,10 +677,10 @@ packages:
       "@automerge/vanillajs":
         optional: true
 
-  "@inkandswitch/patchwork-e2e@0.1.0":
+  "@inkandswitch/patchwork-e2e@0.1.2":
     resolution:
       {
-        integrity: sha512-zhJmpSJe5fRo62MVvLcnni9CxG1b6b5Ppnvd5IWE/pZqKdQLVZefTIbIk1cLv+y2o6jEO8nVowgNnauX6/hnmw==,
+        integrity: sha512-7HutYgLNHePsjOstQUIHcbeiZJwo6+Njh9k0lmZTFzHXqna4O1KrZ4Nlp6+IMYIgf69zYm1xPsGwLhioUo2HtA==,
       }
     hasBin: true
 
@@ -1782,7 +1782,7 @@ snapshots:
       - supports-color
       - utf-8-validate
 
-  "@inkandswitch/patchwork-e2e@0.1.0":
+  "@inkandswitch/patchwork-e2e@0.1.2":
     dependencies:
       "@playwright/test": 1.59.1
 
