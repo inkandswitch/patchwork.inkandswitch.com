@@ -1,0 +1,18 @@
+{
+  "name": "patchwork.inkandswitch.com",
+  "type": "module",
+  "private": true,
+  "dependencies": {
+    "@inkandswitch/patchwork": "^0.1.0"
+  },
+  "devDependencies": {
+    "vite": "^7.3.5"
+  },
+  "scripts": {
+    "dev": "concurrently -k \"vite build --watch\" \"vite preview\"",
+    "serve": "vite preview",
+    "build": "vite build",
+    "preview": "vite preview",
+    "sync": "vite build && pushwork sync"
+  }
+}
