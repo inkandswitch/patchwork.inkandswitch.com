@@ -8,6 +8,8 @@ const DEFAULT_PACKAGE_LIST =
   "https://base.pkg.patchwork.inkandswitch.com/modules.json";
 
 const packageListURL = (
+  new URLSearchParams(location.search).get("system-package-list") ||
+  localStorage.getItem("systemPackageListURL") ||
   import.meta.env.PATCHWORK_SYSTEM_PACKAGE_LIST_URL ||
   import.meta.env.VITE_DEFAULT_MODULES ||
   DEFAULT_PACKAGE_LIST
