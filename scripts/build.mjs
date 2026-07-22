@@ -42,10 +42,7 @@ function resolvedPackage(name) {
 }
 
 function installedBase() {
-	for (const name of [
-		"@inkandswitch/patchwork-base-packages",
-		"@inkandswitch/patchwork-pkg-base",
-	]) {
+	for (const name of ["@inkandswitch/patchwork-pkg-base"]) {
 		const manifest = resolvePackageFile(`${name}/package.json`)
 		if (!manifest) continue
 		const packageRoot = dirname(manifest)
