@@ -1,0 +1,65 @@
+name: update patchwork packages
+
+on:
+  repository_dispatch:
+    types: [core-published, base-published]
+  schedule:
+    - cron: "0 * * * *"
+  workflow_dispatch:
+
+concurrency:
+  group: update-patchwork-packages
+  cancel-in-progress: true
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          token: ${{ secrets.PATCHWORK_CROW_TOKEN }}
+
+      - uses: pnpm/action-setup@v4
+        with:
+          run_install: false
+          version: 11.15.1
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: pnpm
+
+      - name: update
+        id: update
+        run: |
+          git checkout -B update-patchwork-packages origin/main
+          pnpm update --latest \
+            @inkandswitch/patchwork \
+            @inkandswitch/patchwork-pkg-base \
+            @inkandswitch/patchwork-e2e
+          git diff --quiet package.json pnpm-lock.yaml && echo "changed=false" >> "$GITHUB_OUTPUT" || echo "changed=true" >> "$GITHUB_OUTPUT"
+
+      - name: commit
+        if: steps.update.outputs.changed == 'true'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git commit -am "update patchwork packages"
+          git push --force origin update-patchwork-packages
+
+      - name: open or update pr
+        if: steps.update.outputs.changed == 'true'
+        env:
+          GH_TOKEN: ${{ secrets.PATCHWORK_CROW_TOKEN }}
+        run: |
+          gh pr view update-patchwork-packages --json state --jq .state | grep -q OPEN \
+            || gh pr create \
+              --head update-patchwork-packages \
+              --base main \
+              --title "update patchwork packages" \
+              --body "$(pnpm list --depth 0 @inkandswitch/patchwork @inkandswitch/patchwork-pkg-base @inkandswitch/patchwork-e2e)"

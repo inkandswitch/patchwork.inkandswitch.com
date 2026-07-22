@@ -81,6 +81,12 @@ if (base) {
   ensureBase(base);
   run("base", "pnpm", ["watch"], base);
 }
-ensure(join(root, "dist", "index.html"), "node", ["scripts/build.mjs"], root, env);
+ensure(
+  join(root, "dist", "index.html"),
+  "node",
+  ["scripts/build.mjs"],
+  root,
+  env,
+);
 run("site", "node", ["scripts/build.mjs", "--watch"], root, env);
 run("preview", "pnpm", ["exec", "vite", "preview"], root, env);
