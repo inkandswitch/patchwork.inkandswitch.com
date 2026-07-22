@@ -15,15 +15,16 @@ const {default: patchwork} = await import(patchworkModule)
 export default defineConfig({
 	resolve: core
 		? {
-				alias: {
-					"@inkandswitch/patchwork": join(
-						core,
-						"core",
-						"patchwork",
-						"dist",
-						"index.js"
-					),
-				},
+				alias: [
+					{
+						find: /^@inkandswitch\/patchwork$/,
+						replacement: join(core, "core", "patchwork", "dist", "index.js"),
+					},
+					{
+						find: /^@inkandswitch\/patchwork\/global\.css$/,
+						replacement: join(core, "core", "patchwork", "dist", "global.css"),
+					},
+				],
 			}
 		: undefined,
 	plugins: [
