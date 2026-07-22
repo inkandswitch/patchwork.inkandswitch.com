@@ -29,9 +29,9 @@ function run(name, command, args, cwd, env = process.env) {
   });
 }
 
-function ensure(path, command, args, cwd) {
+function ensure(path, command, args, cwd, env = process.env) {
   if (existsSync(path)) return;
-  const child = spawnSync(command, args, { cwd, stdio: "inherit" });
+  const child = spawnSync(command, args, { cwd, env, stdio: "inherit" });
   if (child.status !== 0) process.exit(child.status ?? 1);
 }
 
@@ -81,5 +81,6 @@ if (base) {
   ensureBase(base);
   run("base", "pnpm", ["watch"], base);
 }
+ensure(join(root, "dist", "index.html"), "node", ["scripts/build.mjs"], root, env);
 run("site", "node", ["scripts/build.mjs", "--watch"], root, env);
 run("preview", "pnpm", ["exec", "vite", "preview"], root, env);
