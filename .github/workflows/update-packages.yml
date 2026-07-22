@@ -61,17 +61,18 @@ jobs:
             for await (const chunk of process.stdin) input += chunk
             const packages = JSON.parse(input)[0]
             const rows = [
-              ...Object.entries(packages.dependencies ?? {}).map(([name, { version }]) => [name, version, "production"]),
-              ...Object.entries(packages.devDependencies ?? {}).map(([name, { version }]) => [name, version, "development"]),
+              ...Object.entries(packages.dependencies ?? {}).map(([name, { version }]) => [name, version]),
+              ...Object.entries(packages.devDependencies ?? {}).map(([name, { version }]) => [name, version]),
             ]
             console.log([
-              "caw caw!",
+              "caw caw! we have updates",
               "",
-              "| Package | Version | Type |",
+              "| Package | Version |",
               "| --- | --- | --- |",
               ...rows.map((row) => `| ${row.join(" | ")} |`),
               "",
-              "Merging this PR updates the live [Patchwork](https://patchwork.inkandswitch.com) website.",
+              "(squark! merging this PR updates the live [Patchwork](https://patchwork.inkandswitch.com) website.)",
+              "caw!!"
             ].join("\\n"))
           ')"
           gh pr view update-patchwork-packages --json state --jq .state | grep -q OPEN \

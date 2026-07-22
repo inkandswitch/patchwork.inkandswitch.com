@@ -13,6 +13,7 @@ const patchworkModule = core
 const { default: patchwork } = await import(patchworkModule);
 
 export default defineConfig({
+  envPrefix: ["VITE_", "PATCHWORK_"],
   resolve: core
     ? {
         alias: [
@@ -55,10 +56,7 @@ export default defineConfig({
           : undefined,
       themeColor: { light: "#f8f8f8", dark: "#181e24" },
       icons: {
-        source:
-          process.env.PATCHWORK_PREVIEW === "true"
-            ? "public/patchwork-preview.svg"
-            : "public/patchwork.svg",
+        source: process.env.PATCHWORK_FAVICON ?? "public/patchwork.svg",
         maskIcon: "public/mask.svg",
       },
     }),
