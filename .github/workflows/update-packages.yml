@@ -68,12 +68,12 @@ jobs:
               "caw caw! we have updates",
               "",
               "| Package | Version |",
-              "| --- | --- | --- |",
+              "| --- | --- |",
               ...rows.map((row) => `| ${row.join(" | ")} |`),
               "",
               "(squark! merging this PR updates the live [Patchwork](https://patchwork.inkandswitch.com) website.)",
               "caw!!"
-            ].join("\\n"))
+            ].join("\n"))
           ')"
           gh pr view update-patchwork-packages --json state --jq .state | grep -q OPEN \
             || gh pr create \
