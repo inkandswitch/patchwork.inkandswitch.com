@@ -1,4 +1,4 @@
-name: deploy preview environment
+name: preview.patchwork.inkandswitch.com
 
 on:
   push:
@@ -15,7 +15,8 @@ permissions:
   contents: read
 
 jobs:
-  deploy:
+  preview:
+    name: preview.patchwork.inkandswitch.com
     runs-on: ubuntu-latest
 
     steps:
@@ -29,12 +30,6 @@ jobs:
           ref: main
           path: core
 
-      - uses: actions/checkout@v7
-        with:
-          repository: inkandswitch/patchwork-base
-          ref: main
-          path: base
-
       - uses: pnpm/action-setup@v4
         with:
           run_install: false
@@ -47,7 +42,6 @@ jobs:
           cache-dependency-path: |
             site/pnpm-lock.yaml
             core/pnpm-lock.yaml
-            base/pnpm-lock.yaml
 
       - name: build core
         working-directory: core
@@ -55,18 +49,12 @@ jobs:
           pnpm install --frozen-lockfile
           pnpm --filter @inkandswitch/patchwork... build
 
-      - name: build base
-        working-directory: base
-        run: |
-          pnpm install --frozen-lockfile
-          pnpm build:ci
-
       - name: build site
         working-directory: site
         env:
           PATCHWORK_CORE_DIR: ${{ github.workspace }}/core
-          PATCHWORK_BASE_DIR: ${{ github.workspace }}/base
           PATCHWORK_PREVIEW: "true"
+          PATCHWORK_SYSTEM_PACKAGE_LIST_URL: https://base.pkg.patchwork.inkandswitch.com/modules.json
         run: |
           pnpm install --frozen-lockfile
           pnpm build

@@ -13,6 +13,7 @@ const patchworkModule = core
 const {default: patchwork} = await import(patchworkModule)
 
 export default defineConfig({
+	envPrefix: ["VITE_", "PATCHWORK_"],
 	resolve: core
 		? {
 				alias: [
