@@ -59,7 +59,7 @@ jobs:
         working-directory: base
         run: |
           pnpm install --frozen-lockfile
-          pnpm build:static:ci
+          pnpm build:ci
 
       - name: build site
         working-directory: site
