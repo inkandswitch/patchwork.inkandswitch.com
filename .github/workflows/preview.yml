@@ -58,8 +58,8 @@ jobs:
       - name: build base
         working-directory: base
         run: |
-          pnpm install --frozen-lockfile
-          node scripts/build-static.mjs --build --strict
+          pnpm -r install
+          pnpm build:tools:ci
 
       - name: build site
         working-directory: site
