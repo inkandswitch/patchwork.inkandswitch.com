@@ -47,7 +47,7 @@ jobs:
         working-directory: core
         run: |
           pnpm install --frozen-lockfile
-          pnpm --filter @inkandswitch/patchwork... build
+          pnpm build
 
       - name: build site
         working-directory: site
