@@ -9,5 +9,3 @@ minimumReleaseAgeExclude:
   - "@inkandswitch/patchwork@0.1.0"
   - "@inkandswitch/patchwork-e2e@0.1.0 || 0.1.1 || 0.1.2"
   - "@inkandswitch/patchwork-pkg-base@0.0.2"
-overrides:
-  "@inkandswitch/patchwork": link:../core/core/patchwork
