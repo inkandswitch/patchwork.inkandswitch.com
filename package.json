@@ -8,11 +8,10 @@
 	},
 	"devDependencies": {
 		"@inkandswitch/patchwork-e2e": "^0.1.2",
-		"concurrently": "^10.0.3",
 		"vite": "^7.3.5"
 	},
 	"scripts": {
-		"dev": "concurrently -k \"node scripts/build.mjs --watch\" \"vite preview\"",
+		"dev": "node scripts/dev.mjs",
 		"serve": "vite preview",
 		"build": "node scripts/build.mjs",
 		"preview": "vite preview",

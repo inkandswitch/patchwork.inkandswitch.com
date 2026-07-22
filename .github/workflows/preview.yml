@@ -59,7 +59,7 @@ jobs:
         working-directory: base
         run: |
           pnpm install --frozen-lockfile
-          node scripts/build-static.mjs --build --strict
+          pnpm build:static:ci
 
       - name: build site
         working-directory: site
@@ -69,7 +69,6 @@ jobs:
           PATCHWORK_PREVIEW: "true"
         run: |
           pnpm install --frozen-lockfile
-          pnpm link "$PATCHWORK_CORE_DIR/core/patchwork"
           pnpm build
 
       - name: deploy
