@@ -1,5 +1,5 @@
 import {execFileSync} from "node:child_process"
-import {existsSync, readFileSync, watch as watchFiles} from "node:fs"
+import {existsSync, readFileSync} from "node:fs"
 import {copyFile, mkdir, readdir, rm, writeFile} from "node:fs/promises"
 import {dirname, join, relative, resolve} from "node:path"
 import {fileURLToPath} from "node:url"
@@ -80,7 +80,13 @@ async function copyBase(source, outDir, previous = new Set()) {
 	})
 	const files = new Set()
 	for (const entry of entries) {
-		if (!entry.isFile() || entry.name === "_headers") continue
+		if (
+			!entry.isFile() ||
+			entry.name === "_headers" ||
+			entry.name === ".watch-ready"
+		) {
+			continue
+		}
 		const from = join(entry.parentPath, entry.name)
 		const path = relative(source, from)
 		files.add(path)
@@ -138,15 +144,21 @@ function environmentPlugin(base) {
 			)
 		},
 		watchBase() {
-			let timer
-			return watchFiles(base.directory, {recursive: true}, () => {
-				clearTimeout(timer)
-				timer = setTimeout(() => {
-					copying = copying.then(async () => {
+			const ready = join(base.directory, ".watch-ready")
+			let modified = existsSync(ready) ? readFileSync(ready, "utf8") : undefined
+			return setInterval(() => {
+				if (!existsSync(ready)) return
+				const next = readFileSync(ready, "utf8")
+				if (next === modified) return
+				modified = next
+				copying = copying
+					.then(async () => {
 						copied = await copyBase(base.directory, outDir, copied)
 					})
-				}, 100)
-			})
+					.catch(error => {
+						console.error(error)
+					})
+			}, 500)
 		},
 	}
 }

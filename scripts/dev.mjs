@@ -35,6 +35,20 @@ function ensure(path, command, args, cwd) {
 	if (child.status !== 0) process.exit(child.status ?? 1)
 }
 
+function ensureBase(directory) {
+	if (existsSync(join(directory, "static-dist", "modules.json"))) return
+	for (const [command, args] of [
+		["pnpm", ["-r", "--if-present", "build"]],
+		["node", ["scripts/bundle.mjs"]],
+	]) {
+		const child = spawnSync(command, args, {
+			cwd: directory,
+			stdio: "inherit",
+		})
+		if (child.status !== 0) process.exit(child.status ?? 1)
+	}
+}
+
 function stop() {
 	if (stopping) return
 	stopping = true
@@ -64,12 +78,7 @@ if (core) {
 }
 
 if (base) {
-	ensure(
-		join(base, "static-dist", "modules.json"),
-		"node",
-		["scripts/build-static.mjs", "--build", "--strict"],
-		base
-	)
+	ensureBase(base)
 	run("base", "pnpm", ["watch"], base)
 }
 run("site", "node", ["scripts/build.mjs", "--watch"], root, env)
