@@ -76,4 +76,4 @@ jobs:
         env:
           NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
           NETLIFY_SITE_ID: ${{ secrets.PREVIEW_NETLIFY_SITE_ID }}
-        run: pnpm dlx netlify-cli@23.5.1 deploy --prod --dir dist
+        run: pnpm --package=netlify-cli@23.5.1 dlx netlify deploy --prod --dir dist
