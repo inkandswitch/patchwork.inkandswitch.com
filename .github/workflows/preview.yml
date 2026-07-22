@@ -58,8 +58,8 @@ jobs:
       - name: build base
         working-directory: base
         run: |
-          pnpm -r install
-          pnpm build:tools:ci
+          pnpm install --frozen-lockfile
+          node scripts/build-static.mjs --build --strict
 
       - name: build site
         working-directory: site
@@ -69,13 +69,12 @@ jobs:
           PATCHWORK_PREVIEW: "true"
         run: |
           pnpm install --frozen-lockfile
-          node scripts/environment.mjs link-core
+          pnpm link "$PATCHWORK_CORE_DIR/core/patchwork"
           pnpm build
-          node scripts/environment.mjs write-build-info
 
       - name: deploy
         working-directory: site
         env:
           NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
           NETLIFY_SITE_ID: ${{ secrets.PREVIEW_NETLIFY_SITE_ID }}
-        run: pnpm exec netlify deploy --prod --dir dist
+        run: pnpm dlx netlify-cli@23.5.1 deploy --prod --dir dist
