@@ -1,0 +1,31 @@
+name: patchcrow
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    types: [opened, reopened]
+
+jobs:
+  caw:
+    runs-on: ubuntu-latest
+    if: github.event_name == 'push' || github.head_ref == 'update-patchwork-packages'
+
+    steps:
+      - name: caw
+        env:
+          WEBHOOK: ${{ secrets.DISCORD_PATCHWORK_FEED_WEBHOOK_URL }}
+          PUSH_CONTENT: "caw caw! the [live patchwork website](https://patchwork.inkandswitch.com) has been updated!!! squark skwoo!!"
+          PR_CONTENT: "caw caw! new patchwork packages are out! [merge this PR](${{ github.event.pull_request.html_url }}) to update the [live website](https://patchwork.inkandswitch.com)!! craw!"
+        run: |
+          if [ "${{ github.event_name }}" = "pull_request" ]; then
+            content="$PR_CONTENT"
+          else
+            content="$PUSH_CONTENT"
+          fi
+          jq -n --arg content "$content" '{
+            username: "patchcrow",
+            avatar_url: "https://github.com/patchcrow.png",
+            content: $content,
+            allowed_mentions: {parse: []}
+          }' | curl -sS -X POST -H "content-type: application/json" -d @- "$WEBHOOK"
