@@ -1,8 +1,31 @@
 import { defineConfig } from "vite";
+import { join, resolve } from "node:path";
+import { pathToFileURL } from "node:url";
 
-const { default: patchwork } = await import("@inkandswitch/patchwork/vite");
+const core = process.env.PATCHWORK_CORE_DIR
+  ? resolve(process.env.PATCHWORK_CORE_DIR)
+  : undefined;
+const patchworkModule = core
+  ? pathToFileURL(
+      join(core, "core", "patchwork", "dist", "vite", "patchwork-plugin.js"),
+    ).href
+  : "@inkandswitch/patchwork/vite";
+const { default: patchwork } = await import(patchworkModule);
 
 export default defineConfig({
+  resolve: core
+    ? {
+        alias: {
+          "@inkandswitch/patchwork": join(
+            core,
+            "core",
+            "patchwork",
+            "dist",
+            "index.js",
+          ),
+        },
+      }
+    : undefined,
   plugins: [
     patchwork({
       siteName: "patchwork.inkandswitch.com",

@@ -1,13 +1,14 @@
 import { execFileSync } from "node:child_process";
 import {
-  constants,
   existsSync,
   readFileSync,
+  watch as watchFiles,
 } from "node:fs";
 import {
   copyFile,
   mkdir,
   readdir,
+  rm,
   writeFile,
 } from "node:fs/promises";
 import { dirname, join, relative, resolve } from "node:path";
@@ -82,18 +83,25 @@ function baseSource() {
   };
 }
 
-async function copyBase(source, outDir) {
+async function copyBase(source, outDir, previous = new Set()) {
   const entries = await readdir(source, {
     recursive: true,
     withFileTypes: true,
   });
+  const files = new Set();
   for (const entry of entries) {
     if (!entry.isFile() || entry.name === "_headers") continue;
     const from = join(entry.parentPath, entry.name);
-    const to = join(outDir, relative(source, from));
+    const path = relative(source, from);
+    files.add(path);
+    const to = join(outDir, path);
     await mkdir(dirname(to), { recursive: true });
-    await copyFile(from, to, constants.COPYFILE_EXCL);
+    await copyFile(from, to);
   }
+  for (const path of previous) {
+    if (!files.has(path)) await rm(join(outDir, path), { force: true });
+  }
+  return files;
 }
 
 function coreSource() {
@@ -109,6 +117,8 @@ function coreSource() {
 
 function environmentPlugin(base) {
   let outDir;
+  let copied = new Set();
+  let copying = Promise.resolve();
   return {
     name: "patchwork-environment",
     apply: "build",
@@ -116,7 +126,10 @@ function environmentPlugin(base) {
       outDir = resolve(config.root, config.build.outDir);
     },
     async closeBundle() {
-      await copyBase(base.directory, outDir);
+      copying = copying.then(async () => {
+        copied = await copyBase(base.directory, outDir, copied);
+      });
+      await copying;
       await writeFile(
         join(outDir, "build-info.json"),
         `${JSON.stringify(
@@ -134,12 +147,25 @@ function environmentPlugin(base) {
         )}\n`,
       );
     },
+    watchBase() {
+      let timer;
+      return watchFiles(base.directory, { recursive: true }, () => {
+        clearTimeout(timer);
+        timer = setTimeout(() => {
+          copying = copying.then(async () => {
+            copied = await copyBase(base.directory, outDir, copied);
+          });
+        }, 100);
+      });
+    },
   };
 }
 
 const base = baseSource();
+const environment = environmentPlugin(base);
 await build({
   root,
   build: watch ? { watch: {} } : undefined,
-  plugins: [environmentPlugin(base)],
+  plugins: [environment],
 });
+if (watch && process.env.PATCHWORK_BASE_DIR) environment.watchBase();
