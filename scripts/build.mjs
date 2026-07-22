@@ -52,7 +52,6 @@ function resolvedPackage(name) {
 
 function installedBase() {
   for (const name of [
-    "@inkandswitch/patchwork-base-packages",
     "@inkandswitch/patchwork-pkg-base",
   ]) {
     const manifest = resolvePackageFile(`${name}/package.json`);
