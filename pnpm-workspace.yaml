@@ -9,3 +9,5 @@ minimumReleaseAgeExclude:
   - '@inkandswitch/patchwork'
   - '@inkandswitch/patchwork-e2e'
   - '@inkandswitch/patchwork-pkg-base'
+  - '@inkandswitch/*'
+  - '@chee/*'
