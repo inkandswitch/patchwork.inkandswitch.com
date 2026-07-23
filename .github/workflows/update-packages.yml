@@ -56,28 +56,20 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.PATCHWORK_CROW_TOKEN }}
         run: |
-          body="$(pnpm list --depth 0 --json @inkandswitch/patchwork @inkandswitch/patchwork-pkg-base @inkandswitch/patchwork-e2e | node --input-type=module -e '
-            let input = ""
-            for await (const chunk of process.stdin) input += chunk
-            const packages = JSON.parse(input)[0]
-            const rows = [
-              ...Object.entries(packages.dependencies ?? {}).map(([name, { version }]) => [name, version]),
-              ...Object.entries(packages.devDependencies ?? {}).map(([name, { version }]) => [name, version]),
-            ]
-            console.log([
-              "caw caw! we have updates",
-              "",
-              "| Package | Version |",
-              "| --- | --- |",
-              ...rows.map((row) => `| ${row.join(" | ")} |`),
-              "",
-              "(squark! merging this PR updates the live [Patchwork](https://patchwork.inkandswitch.com) website.)",
-              "caw!!"
-            ].join("\n"))
-          ')"
-          gh pr view update-patchwork-packages --json state --jq .state | grep -q OPEN \
-            || gh pr create \
+          git show origin/main:package.json > "$RUNNER_TEMP/previous-package.json"
+          body="$(pnpm list --depth 0 --json @inkandswitch/patchwork @inkandswitch/patchwork-pkg-base @inkandswitch/patchwork-e2e | node scripts/update-packages-pr-body.mjs "$RUNNER_TEMP/previous-package.json")"
+          pr="$(gh pr list \
+            --head update-patchwork-packages \
+            --base main \
+            --state open \
+            --json number \
+            --jq '.[0].number')"
+          if [[ -n "$pr" ]]; then
+            gh pr edit "$pr" --body "$body"
+          else
+            gh pr create \
               --head update-patchwork-packages \
               --base main \
               --title "update patchwork packages" \
               --body "$body"
+          fi
