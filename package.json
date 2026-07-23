@@ -13,7 +13,7 @@
 	"scripts": {
 		"dev": "node scripts/dev.mjs",
 		"serve": "vite preview",
-		"build": "node scripts/build.mjs",
+		"build": "vite build",
 		"preview": "vite preview",
 		"sync": "pnpm build && pushwork sync",
 		"test": "echo ':))'"

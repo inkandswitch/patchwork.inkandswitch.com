@@ -5,6 +5,7 @@ import {fileURLToPath} from "node:url"
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), "..")
 const children = []
+const processGroups = process.platform !== "win32"
 let stopping = false
 
 function checkout(variable, names) {
@@ -15,7 +16,12 @@ function checkout(variable, names) {
 }
 
 function run(name, command, args, cwd, env = process.env) {
-	const child = spawn(command, args, {cwd, env, stdio: "inherit"})
+	const child = spawn(command, args, {
+		cwd,
+		env,
+		stdio: "inherit",
+		detached: processGroups,
+	})
 	children.push(child)
 	child.on("exit", (code, signal) => {
 		if (stopping) return
@@ -31,6 +37,10 @@ function run(name, command, args, cwd, env = process.env) {
 
 function ensure(path, command, args, cwd, env = process.env) {
 	if (existsSync(path)) return
+	build(command, args, cwd, env)
+}
+
+function build(command, args, cwd, env = process.env) {
 	const child = spawnSync(command, args, {cwd, env, stdio: "inherit"})
 	if (child.status !== 0) process.exit(child.status ?? 1)
 }
@@ -52,7 +62,15 @@ function ensureBase(directory) {
 function stop() {
 	if (stopping) return
 	stopping = true
-	for (const child of children) child.kill("SIGTERM")
+	for (const child of children) {
+		if (child.exitCode !== null || child.killed) continue
+		try {
+			if (processGroups && child.pid) process.kill(-child.pid, "SIGTERM")
+			else child.kill("SIGTERM")
+		} catch (error) {
+			if (error.code !== "ESRCH") throw error
+		}
+	}
 	if (!children.some(child => child.exitCode === null)) process.exit()
 }
 
@@ -66,6 +84,10 @@ const env = {
 	...(core ? {PATCHWORK_CORE_DIR: core} : {}),
 	...(base ? {PATCHWORK_BASE_DIR: base} : {}),
 }
+const watchEnv = {
+	...env,
+	PNPM_CONFIG_REPORTER: process.env.PNPM_CONFIG_REPORTER ?? "append-only",
+}
 
 if (core) {
 	ensure(
@@ -74,19 +96,13 @@ if (core) {
 		["--filter", "@inkandswitch/patchwork...", "build"],
 		core
 	)
-	run("core", "pnpm", ["watch"], core)
 }
 
 if (base) {
 	ensureBase(base)
-	run("base", "pnpm", ["watch"], base)
 }
-ensure(
-	join(root, "dist", "index.html"),
-	"node",
-	["scripts/build.mjs"],
-	root,
-	env
-)
-run("site", "node", ["scripts/build.mjs", "--watch"], root, env)
-run("preview", "pnpm", ["exec", "vite", "preview"], root, env)
+
+build("pnpm", ["exec", "vite", "build"], root, env)
+if (core) run("core", "pnpm", ["watch"], core, watchEnv)
+if (base) run("base", "pnpm", ["watch"], base, watchEnv)
+run("site", "pnpm", ["exec", "vite"], root, watchEnv)
