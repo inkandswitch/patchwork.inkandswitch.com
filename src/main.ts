@@ -28,4 +28,11 @@ window.patchwork = await setup({
 	throw error
 })
 
+declare global {
+  interface Window {
+	 accountDocHandle: typeof window.patchwork.account
+  }
+}
+
+window.accountDocHandle = window.patchwork.account
 hideLoadingAnimation()
