@@ -79,7 +79,7 @@ function baseSource(): {
 } {
 	if (process.env.PATCHWORK_BASE_DIR) {
 		const checkout = resolve(process.env.PATCHWORK_BASE_DIR)
-		const directory = join(checkout)
+		const directory = join(checkout, "static-dist")
 		if (!existsSync(join(directory, "modules.json"))) {
 			throw new Error(`No built base bundle at ${directory}`)
 		}
