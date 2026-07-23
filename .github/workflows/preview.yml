@@ -28,7 +28,7 @@ jobs:
         with:
           repository: inkandswitch/patchwork-next
           ref: main
-          path: core
+          path: system
 
       - uses: pnpm/action-setup@v4
         with:
@@ -41,10 +41,10 @@ jobs:
           cache: pnpm
           cache-dependency-path: |
             site/pnpm-lock.yaml
-            core/pnpm-lock.yaml
+            system/pnpm-lock.yaml
 
-      - name: build core
-        working-directory: core
+      - name: build system
+        working-directory: system
         run: |
           pnpm install --frozen-lockfile
           pnpm build
@@ -52,7 +52,7 @@ jobs:
       - name: build site
         working-directory: site
         env:
-          PATCHWORK_CORE_DIR: ${{ github.workspace }}/core
+          PATCHWORK_SYSTEM_DIRECTORY: ${{ github.workspace }}/system
           PATCHWORK_FAVICON: public/patchwork-preview.svg
           PATCHWORK_SYSTEM_PACKAGE_LIST_URL: https://base.pkg.patchwork.inkandswitch.com/modules.json
         run: |

@@ -15,9 +15,11 @@ import {fileURLToPath, pathToFileURL} from "node:url"
 
 const root = dirname(fileURLToPath(import.meta.url))
 
-const core = process.env.PATCHWORK_CORE_DIR
-	? resolve(process.env.PATCHWORK_CORE_DIR)
-	: undefined
+const systemDirectory =
+	process.env.PATCHWORK_SYSTEM_DIRECTORY ?? process.env.PATCHWORK_CORE_DIR
+const pkgBaseDirectory =
+	process.env.PATCHWORK_PKG_BASE_DIRECTORY ?? process.env.PATCHWORK_BASE_DIR
+const core = systemDirectory ? resolve(systemDirectory) : undefined
 const patchworkModule = core
 	? pathToFileURL(
 			join(core, "core", "patchwork", "dist", "vite", "patchwork-plugin.js")
@@ -77,8 +79,8 @@ function baseSource(): {
 	version?: string
 	revision?: string
 } {
-	if (process.env.PATCHWORK_BASE_DIR) {
-		const checkout = resolve(process.env.PATCHWORK_BASE_DIR)
+	if (pkgBaseDirectory) {
+		const checkout = resolve(pkgBaseDirectory)
 		const directory = join(checkout, "static-dist")
 		if (!existsSync(join(directory, "modules.json"))) {
 			throw new Error(`No built base bundle at ${directory}`)
@@ -154,7 +156,7 @@ async function copyBase(
 
 /**
  * Copies the base tools bundle (modules.json + packages/) alongside the built
- * shell, and records what everything was built from. With PATCHWORK_BASE_DIR
+ * shell, and records what everything was built from. With PATCHWORK_PKG_BASE_DIRECTORY
  * set, base's own watcher touches .watch-ready after each rebuild — watching
  * that one file rebuilds the site and recopies the bundle.
  */
@@ -202,7 +204,7 @@ function environment(): Plugin {
 			)
 		},
 		buildStart() {
-			if (process.env.PATCHWORK_BASE_DIR) {
+			if (pkgBaseDirectory) {
 				this.addWatchFile(join(base.directory, ".watch-ready"))
 			}
 		},

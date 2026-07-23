@@ -88,11 +88,9 @@ function hideFooter() {
 	footerVisible = false
 }
 
-function checkout(variable, names) {
-	if (process.env[variable]) return resolve(process.env[variable])
-	return names
-		.map(name => resolve(root, "..", name))
-		.find(directory => existsSync(join(directory, "package.json")))
+function checkout(variables) {
+	const directory = variables.map(name => process.env[name]).find(Boolean)
+	return directory ? resolve(directory) : undefined
 }
 
 function packageVersion(name) {
@@ -198,8 +196,8 @@ process.on("SIGINT", stop)
 process.on("SIGTERM", stop)
 process.on("exit", hideFooter)
 
-const core = checkout("PATCHWORK_CORE_DIR", ["core", "patchwork-next"])
-const base = checkout("PATCHWORK_BASE_DIR", ["base", "patchwork-base"])
+const core = checkout(["PATCHWORK_SYSTEM_DIRECTORY", "PATCHWORK_CORE_DIR"])
+const base = checkout(["PATCHWORK_PKG_BASE_DIRECTORY", "PATCHWORK_BASE_DIR"])
 corePackages = core
 	? displayPath(core)
 	: packageVersion("@inkandswitch/patchwork")
@@ -208,8 +206,8 @@ basePackages = base
 	: packageVersion("@inkandswitch/patchwork-pkg-base")
 const env = {
 	...process.env,
-	...(core ? {PATCHWORK_CORE_DIR: core} : {}),
-	...(base ? {PATCHWORK_BASE_DIR: base} : {}),
+	...(core ? {PATCHWORK_SYSTEM_DIRECTORY: core} : {}),
+	...(base ? {PATCHWORK_PKG_BASE_DIRECTORY: base} : {}),
 }
 const watchEnv = {
 	...env,
