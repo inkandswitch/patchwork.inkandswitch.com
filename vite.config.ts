@@ -121,6 +121,38 @@ async function baseFiles(source: string, directory = source): Promise<string[]> 
   return files;
 }
 
+async function copyBase(
+  source: string,
+  outDir: string,
+  previous: Set<string>,
+): Promise<Set<string>> {
+  const touched = new Set(previous);
+  for (let attempt = 0; attempt < 5; attempt++) {
+    try {
+      const files = await baseFiles(source);
+      for (const path of files) {
+        touched.add(path);
+        const to = join(outDir, path);
+        await mkdir(dirname(to), { recursive: true });
+        await copyFile(join(source, path), to);
+      }
+      const present = new Set(files);
+      for (const path of touched) {
+        if (!present.has(path)) await rm(join(outDir, path), { force: true });
+      }
+      return present;
+    } catch (error) {
+      if (
+        (error as NodeJS.ErrnoException).code !== "ENOENT" ||
+        attempt === 4
+      ) {
+        throw error;
+      }
+    }
+  }
+  return previous;
+}
+
 /**
  * Copies the base tools bundle (modules.json + packages/) alongside the built
  * shell, and records what everything was built from. With PATCHWORK_BASE_DIR
@@ -172,17 +204,7 @@ function environment(): Plugin {
       }
     },
     async closeBundle() {
-      const files = await baseFiles(base.directory);
-      for (const path of files) {
-        const to = join(outDir, path);
-        await mkdir(dirname(to), { recursive: true });
-        await copyFile(join(base.directory, path), to);
-      }
-      const present = new Set(files);
-      for (const path of copied) {
-        if (!present.has(path)) await rm(join(outDir, path), { force: true });
-      }
-      copied = present;
+      copied = await copyBase(base.directory, outDir, copied);
 
       await writeFile(
         join(outDir, "build-info.json"),
