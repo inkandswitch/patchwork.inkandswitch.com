@@ -1,35 +1,76 @@
 import { spawn, spawnSync } from "node:child_process";
 import { existsSync, readFileSync } from "node:fs";
-import { dirname, join, resolve } from "node:path";
+import { dirname, join, relative, resolve, sep } from "node:path";
 import { fileURLToPath } from "node:url";
 import { stripVTControlCharacters } from "node:util";
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const children = [];
 const processGroups = process.platform !== "win32";
-const footerLines = 3;
+const footerLines = 7;
 const footer = process.stdout.isTTY && process.stdout.rows > footerLines;
 let stopping = false;
 let footerVisible = false;
-let devURL = "Vite starting…";
+let status = "starting";
+let readyTimer;
+let devURL = "starting…";
 let corePackages = "";
 let basePackages = "";
+
+function fit(value, width) {
+  if (value.length <= width) return value;
+  return `${value.slice(0, Math.max(0, width - 1))}…`;
+}
+
+function displayPath(directory) {
+  const path = relative(root, directory);
+  const distance = path.split(sep).filter((part) => part === "..").length;
+  return distance <= 1 ? path : directory;
+}
+
+function setStatus(next, settle = false) {
+  clearTimeout(readyTimer);
+  status = next;
+  showFooter();
+  if (settle) readyTimer = setTimeout(() => setStatus("ready"), 800);
+}
 
 function showFooter() {
   if (!footer) return;
   const row = process.stdout.rows;
   const start = row - footerLines + 1;
+  const width = Math.max(
+    24,
+    Math.min(
+      (process.stdout.columns ?? 80) - 1,
+      Math.max(
+        ` Patchwork ${status} `.length + 2,
+        devURL.length + 17,
+        corePackages.length + 17,
+        basePackages.length + 17,
+      ),
+    ),
+  );
+  const valueWidth = width - 17;
+  const title = fit(`─ patchwork ${status} `, width - 2);
   const lines = [
-    ["Patchwork site", devURL],
-    ["Patchwork core packages", corePackages],
-    ["Patchwork base packages", basePackages],
+    `\x1b[2m┌${title}${"─".repeat(width - title.length - 2)}┐\x1b[0m`,
+    `\x1b[2m│\x1b[0m`,
+    `\x1b[2m│\x1b[0m  \x1b[36m→\x1b[0m site:     \x1b[36m${fit(devURL, valueWidth)}\x1b[0m`,
+    `\x1b[2m│\x1b[0m  \x1b[36m→\x1b[0m core:     \x1b[36m${fit(corePackages, valueWidth)}\x1b[0m`,
+    `\x1b[2m│\x1b[0m  \x1b[36m→\x1b[0m pkg-base: \x1b[36m${fit(basePackages, valueWidth)}\x1b[0m`,
+    `\x1b[2m│\x1b[0m`,
+    `\x1b[2m└${"─".repeat(width - 2)}┘\x1b[0m`,
   ];
   process.stdout.write(
     `\x1b[r\x1b[1;${start - 1}r\x1b[?7l${lines
-      .map(
-        ([label, value], index) =>
-          `\x1b[${start + index};1H\x1b[2K\x1b[2m${label}:\x1b[0m \x1b[36m${value}\x1b[0m`,
-      )
+      .map((line, index) => {
+        const border =
+          index > 0 && index < lines.length - 1
+            ? `\x1b[${start + index};${width}H\x1b[2m│\x1b[0m`
+            : "";
+        return `\x1b[${start + index};1H\x1b[2K${line}${border}`;
+      })
       .join("")}\x1b[?7h\x1b[${start - 1};1H`,
   );
   footerVisible = true;
@@ -81,6 +122,20 @@ function run(name, command, args, cwd, env = process.env) {
   if (footer) {
     child.stdout.pipe(process.stdout, { end: false });
     child.stderr.pipe(process.stderr, { end: false });
+    for (const output of [child.stdout, child.stderr]) {
+      output.on("data", (chunk) => {
+        const text = stripVTControlCharacters(chunk.toString());
+        const changed = text.match(
+          /(?:hmr update|page reload)\s+([^\s]+)|(?:change|changed|rebuild(?:ing)?)[: ]+([^\n]+)/i,
+        );
+        if (changed) {
+          const detail = fit((changed[1] ?? changed[2]).trim(), 48);
+          setStatus(`rebuilding ${name}: ${detail}`, true);
+        } else if (/build started|building/i.test(text)) {
+          setStatus(`rebuilding ${name}`, true);
+        }
+      });
+    }
   }
   children.push(child);
   child.on("exit", (code, signal) => {
@@ -143,9 +198,13 @@ process.on("exit", hideFooter);
 
 const core = checkout("PATCHWORK_CORE_DIR", ["core", "patchwork-next"]);
 const base = checkout("PATCHWORK_BASE_DIR", ["base", "patchwork-base"]);
-corePackages = core ?? packageVersion("@inkandswitch/patchwork");
+corePackages = core
+  ? displayPath(core)
+  : packageVersion("@inkandswitch/patchwork");
 basePackages =
-  base ?? packageVersion("@inkandswitch/patchwork-pkg-base");
+  base
+    ? displayPath(base)
+    : packageVersion("@inkandswitch/patchwork-pkg-base");
 const env = {
   ...process.env,
   ...(core ? { PATCHWORK_CORE_DIR: core } : {}),
@@ -179,7 +238,7 @@ site.stdout?.on("data", (chunk) => {
   const match = siteOutput.match(/Local:\s+(https?:\/\/\S+)/);
   if (match) {
     devURL = match[1];
-    showFooter();
+    setStatus("ready");
     siteOutput = "";
   } else {
     siteOutput = siteOutput.slice(-2048);
