@@ -3,7 +3,11 @@
 	"type": "module",
 	"private": true,
 	"dependencies": {
+		"@automerge/automerge": "3.3.2",
+		"@automerge/automerge-repo": "2.6.0-subduction.46",
+		"@automerge/automerge-subduction": "0.16.0",
 		"@inkandswitch/patchwork": "^0.4.0",
+		"@inkandswitch/patchwork-filesystem": "^0.2.5",
 		"@inkandswitch/patchwork-pkg-base": "^0.0.21"
 	},
 	"devDependencies": {
