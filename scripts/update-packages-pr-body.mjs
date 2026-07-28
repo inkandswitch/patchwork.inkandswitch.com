@@ -16,14 +16,21 @@ const previousDependencies = {
 	...previousPackage.devDependencies,
 }
 
-const rows = await Promise.all(
-	Object.entries(dependencies).map(async ([name, { version }]) => {
-		const previousVersion = previousDependencies[name]?.match(
+const updated = Object.entries(dependencies)
+	.map(([name, { version }]) => ({
+		name,
+		version,
+		previousVersion: previousDependencies[name]?.match(
 			/\d+\.\d+\.\d+(?:-[0-9A-Za-z.-]+)?/,
-		)?.[0]
+		)?.[0],
+	}))
+	.filter(({ version, previousVersion }) => version !== previousVersion)
+
+const rows = await Promise.all(
+	updated.map(async ({ name, version, previousVersion }) => {
 		const details = await packageDetails(name, version, previousVersion)
 		const packageName = details ? `[${name}](${details})` : name
-		return [packageName, version]
+		return [packageName, previousVersion ?? "—", version]
 	}),
 )
 
@@ -31,8 +38,8 @@ console.log(
 	[
 		"caw caw! we have updates",
 		"",
-		"| Package | Version |",
-		"| --- | --- |",
+		"| Package | Current Version | New Version |",
+		"| --- | --- | --- |",
 		...rows.map((row) => `| ${row.join(" | ")} |`),
 		"",
 		"(squark! merging this PR updates the live [Patchwork](https://patchwork.inkandswitch.com) website.)",
