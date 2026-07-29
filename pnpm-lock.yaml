@@ -12,8 +12,8 @@ importers:
         specifier: ^0.4.0
         version: 0.4.0(@types/node@20.19.43)(solid-js@1.9.14)(vite@7.3.6(@types/node@20.19.43)(jiti@2.7.0)(yaml@2.9.0))(ws@8.21.1)
       '@inkandswitch/patchwork-pkg-base':
-        specifier: ^0.0.21
-        version: 0.0.21
+        specifier: ^0.0.23
+        version: 0.0.23
     devDependencies:
       '@inkandswitch/patchwork-e2e':
         specifier: ^0.2.0
@@ -107,8 +107,8 @@ packages:
   '@codemirror/state@6.7.1':
     resolution: {integrity: sha512-9QzNDgE4EYDnAHfrTlR2lwiPciiOymLtwKK+8yHQzCc7GXhAP9xdEbEJFy2IWB1j9UGUl9BsgMmTo/ImA02T7A==}
 
-  '@codemirror/view@6.43.6':
-    resolution: {integrity: sha512-EVunGSYN1wz1p75WY1s3Xg7t3i8Yol0kGZGizNdX9BUFgMFILYVe8/u6EVpo7Ff5PwbZuILb4QAq7IZoKzIEQA==}
+  '@codemirror/view@6.43.7':
+    resolution: {integrity: sha512-FZsExxkoxnAN+d9TgqXLg5g4A1oQwzX9WlkOT5i2PKkcW7xx3Bmu0vs90g6fo9Mpdsb/l96dnAraQ8932aO4/g==}
 
   '@emnapi/runtime@1.11.3':
     resolution: {integrity: sha512-Xz4Tpyki7XyrpbUK1jR1AhdAdaXyhhY4lZ3neLodmhpuWfy2PAQN5B46sAiU4liOXGLkHypn/qU+jvfWSCYYLA==}
@@ -476,8 +476,8 @@ packages:
       '@automerge/automerge': '*'
       '@automerge/automerge-repo': '*'
 
-  '@inkandswitch/patchwork-pkg-base@0.0.21':
-    resolution: {integrity: sha512-1qwIvsGfAMKpqOXhFzK6Pe0Id7oVQbXNGQqnViAVXkXAD2Rzl763QYD2rw7iVTW8j8EIvg5OmHrQPb54fkFlEA==}
+  '@inkandswitch/patchwork-pkg-base@0.0.23':
+    resolution: {integrity: sha512-quV3A/3hDDyU0GzQTeAzLbIKVfVF6TLj9B9KzcUfIbcVfXsIZGgYrTcGW/Xcek/8gMOGFt/ArCzY6HAgKt3qOw==}
 
   '@inkandswitch/patchwork-plugins@1.2.0':
     resolution: {integrity: sha512-d9i+soLbEGYD8CJLXh3b+cYWUUKO/r38FVghbJQVAlTQ3v8zyVIRsHrh+BqvtrV4EF1blIu5/7Fz5qzPyt/6LA==}
@@ -1054,13 +1054,13 @@ snapshots:
     dependencies:
       '@codemirror/language': 6.12.4
       '@codemirror/state': 6.7.1
-      '@codemirror/view': 6.43.6
+      '@codemirror/view': 6.43.7
       '@lezer/common': 1.5.2
 
   '@codemirror/language@6.12.4':
     dependencies:
       '@codemirror/state': 6.7.1
-      '@codemirror/view': 6.43.6
+      '@codemirror/view': 6.43.7
       '@lezer/common': 1.5.2
       '@lezer/highlight': 1.2.3
       '@lezer/lr': 1.4.10
@@ -1070,7 +1070,7 @@ snapshots:
     dependencies:
       '@marijn/find-cluster-break': 1.0.3
 
-  '@codemirror/view@6.43.6':
+  '@codemirror/view@6.43.7':
     dependencies:
       '@codemirror/state': 6.7.1
       crelt: 1.0.7
@@ -1275,7 +1275,7 @@ snapshots:
       '@codemirror/commands': 6.10.4
       '@codemirror/language': 6.12.4
       '@codemirror/state': 6.7.1
-      '@codemirror/view': 6.43.6
+      '@codemirror/view': 6.43.7
       '@inkandswitch/patchwork-elements': 6.0.0(@automerge/automerge-repo@2.6.0-subduction.46)(@inkandswitch/patchwork-filesystem@0.2.5(@automerge/automerge-repo@2.6.0-subduction.46)(@automerge/automerge@3.3.2))(@inkandswitch/patchwork-plugins@1.2.0(@automerge/automerge-repo@2.6.0-subduction.46)(@automerge/automerge@3.3.2)(@inkandswitch/patchwork-filesystem@0.2.5(@automerge/automerge-repo@2.6.0-subduction.46)(@automerge/automerge@3.3.2)))(@inkandswitch/patchwork-providers@0.5.0(@automerge/automerge-repo@2.6.0-subduction.46))(solid-js@1.9.14)
       '@inkandswitch/patchwork-filesystem': 0.2.5(@automerge/automerge-repo@2.6.0-subduction.46)(@automerge/automerge@3.3.2)
       '@inkandswitch/patchwork-plugins': 1.2.0(@automerge/automerge-repo@2.6.0-subduction.46)(@automerge/automerge@3.3.2)(@inkandswitch/patchwork-filesystem@0.2.5(@automerge/automerge-repo@2.6.0-subduction.46)(@automerge/automerge@3.3.2))
@@ -1324,7 +1324,7 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  '@inkandswitch/patchwork-pkg-base@0.0.21': {}
+  '@inkandswitch/patchwork-pkg-base@0.0.23': {}
 
   '@inkandswitch/patchwork-plugins@1.2.0(@automerge/automerge-repo@2.6.0-subduction.46)(@automerge/automerge@3.3.2)(@inkandswitch/patchwork-filesystem@0.2.5(@automerge/automerge-repo@2.6.0-subduction.46)(@automerge/automerge@3.3.2))':
     dependencies:
