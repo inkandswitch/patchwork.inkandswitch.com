@@ -4,7 +4,7 @@
 	"private": true,
 	"dependencies": {
 		"@inkandswitch/patchwork": "^0.4.0",
-		"@inkandswitch/patchwork-pkg-base": "^0.0.21"
+		"@inkandswitch/patchwork-pkg-base": "^0.0.23"
 	},
 	"devDependencies": {
 		"@inkandswitch/patchwork-e2e": "^0.2.0",
