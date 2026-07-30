@@ -288,7 +288,6 @@ function environment(): Plugin {
 
 export default defineConfig(({command}) => {
 	const plugins = patchwork({
-		siteName: "patchwork.inkandswitch.com",
 		title: "Patchwork",
 		description: "local-first collaborative malleable software environment",
 		server: core ? {fs: {allow: [root, core]}} : undefined,
@@ -312,7 +311,6 @@ export default defineConfig(({command}) => {
 		if (importmap) delete importmap.buildStart
 	}
 	return {
-		envPrefix: ["VITE_", "PATCHWORK_"],
 		optimizeDeps: {
 			exclude: ["@automerge/automerge-repo-storage-indexeddb"],
 		},
