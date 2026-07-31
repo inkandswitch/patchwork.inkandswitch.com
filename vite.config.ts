@@ -1,7 +1,7 @@
 import {defineConfig} from "vite"
-import {dirname} from "node:path"
+import {dirname, join} from "node:path"
 import {fileURLToPath} from "node:url"
-import {core, environment, patchwork} from "./vite/environment.ts"
+import {base, core, environment, patchwork} from "./vite/environment.ts"
 
 const root = dirname(fileURLToPath(import.meta.url))
 
@@ -25,6 +25,14 @@ export default defineConfig({
 			icons: {
 				source: process.env.PATCHWORK_FAVICON ?? "public/patchwork.svg",
 				maskIcon: "public/mask.svg",
+			},
+			static: [
+				base
+					? {from: join(base, "static-dist"), watch: ".watch-ready"}
+					: "@inkandswitch/patchwork-pkg-base",
+			],
+			buildInfo: {
+				packageListURL: process.env.PATCHWORK_SYSTEM_PACKAGE_LIST_URL,
 			},
 		}),
 	],
