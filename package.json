@@ -3,8 +3,8 @@
 	"type": "module",
 	"private": true,
 	"dependencies": {
-		"@inkandswitch/patchwork": "^0.4.0",
-		"@inkandswitch/patchwork-pkg-base": "^0.0.23"
+		"@inkandswitch/patchwork": "^0.7.2",
+		"@inkandswitch/patchwork-pkg-base": "^0.0.28"
 	},
 	"devDependencies": {
 		"@inkandswitch/patchwork-e2e": "^0.2.0",
