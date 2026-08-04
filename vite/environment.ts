@@ -1,5 +1,4 @@
 import type {Plugin} from "vite"
-import {readFile} from "node:fs/promises"
 import {join, resolve} from "node:path"
 import {pathToFileURL} from "node:url"
 
@@ -21,17 +20,15 @@ export const {default: patchwork} = await import(
 
 /**
  * Points the site at a PATCHWORK_SYSTEM_DIRECTORY checkout: its build of
- * patchwork instead of the installed one, and its stylesheets instead of the
- * ones the patchwork plugin resolves from node_modules. Runs before that
- * plugin so its dev middleware registers first and wins.
+ * patchwork instead of the installed one. In dev the patchwork plugin is
+ * already the checkout's own, so the stylesheets it serves are the checkout's
+ * too; these aliases are what the build needs.
  *
  * Without the environment variable this does nothing at all — everything else
  * a site needs is the patchwork plugin's own.
  */
 export function environment(): Plugin | undefined {
 	if (!core) return
-	const patchworkCSS = join(core, "core", "patchwork", "dist", "global.css")
-	const bootloaderCSS = join(core, "core", "bootloader", "dist", "global.css")
 	return {
 		name: "patchwork-environment",
 		config() {
@@ -44,34 +41,11 @@ export function environment(): Plugin | undefined {
 						},
 						{
 							find: /^@inkandswitch\/patchwork\/global\.css$/,
-							replacement: patchworkCSS,
+							replacement: join(core, "core", "patchwork", "dist", "global.css"),
 						},
 					],
 				},
 			}
-		},
-		configureServer(server) {
-			server.middlewares.use(async (request, response, next) => {
-				const pathname = request.url?.split("?")[0]
-				if (
-					pathname !== "/@inkandswitch/patchwork/global.css" &&
-					pathname !== "/@inkandswitch/patchwork-bootloader/global.css"
-				) {
-					return next()
-				}
-				const bootloader = pathname.includes("bootloader")
-				const css = await readFile(bootloader ? bootloaderCSS : patchworkCSS, "utf8")
-				response.setHeader("Cache-Control", "no-cache")
-				response.setHeader("Content-Type", "text/css")
-				response.end(
-					bootloader
-						? css
-						: css.replace(
-								'"@inkandswitch/patchwork-bootloader/global.css"',
-								'"/@inkandswitch/patchwork-bootloader/global.css"'
-							)
-				)
-			})
 		},
 	}
 }
