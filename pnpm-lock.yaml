@@ -12,8 +12,8 @@ importers:
         specifier: ^0.7.3
         version: 0.7.3(@types/node@20.19.43)(solid-js@1.9.14)(vite@8.1.5(@types/node@20.19.43)(esbuild@0.28.1)(jiti@2.7.0)(yaml@2.9.0))(ws@8.21.2)
       '@inkandswitch/patchwork-pkg-base':
-        specifier: ^0.0.35
-        version: 0.0.35
+        specifier: ^0.0.36
+        version: 0.0.36
     devDependencies:
       '@inkandswitch/patchwork-e2e':
         specifier: ^0.2.0
@@ -632,8 +632,8 @@ packages:
       '@automerge/automerge': '*'
       '@automerge/automerge-repo': '*'
 
-  '@inkandswitch/patchwork-pkg-base@0.0.35':
-    resolution: {integrity: sha512-gnJqrTzubd2FOPMMgSb/Yw7prgny1KJ2TgfW28nVo55u5j0+1hqsJOBytgX6a9sJv03mjRgK0Ryn2apKV6uXjg==}
+  '@inkandswitch/patchwork-pkg-base@0.0.36':
+    resolution: {integrity: sha512-Z7ATmb5Y9bpOxW5otps3kfRAVwOMsMw2jY5B3qoxePz+5HwsrHfY8kccJapNg2sUFryn7bYPeocnTfLog+sx4Q==}
 
   '@inkandswitch/patchwork-plugins@1.2.2':
     resolution: {integrity: sha512-AGVYS1Sd937YV/R/C/gGd615MOHsk/uPijIa/ONYGKFOESqwis9XrPXVd3fMTnt/8dsgtYoMEXfcpk5eLLL/bQ==}
@@ -1622,7 +1622,7 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  '@inkandswitch/patchwork-pkg-base@0.0.35': {}
+  '@inkandswitch/patchwork-pkg-base@0.0.36': {}
 
   '@inkandswitch/patchwork-plugins@1.2.2(@automerge/automerge-repo@2.6.0-subduction.47)(@automerge/automerge@3.3.2)(@inkandswitch/patchwork-filesystem@0.2.7(@automerge/automerge-repo@2.6.0-subduction.47)(@automerge/automerge@3.3.2))':
     dependencies:
