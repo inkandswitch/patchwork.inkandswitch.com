@@ -2,12 +2,6 @@ allowBuilds:
   cbor-extract: true
   esbuild: true
 minimumReleaseAgeExclude:
-  - "@inkandswitch/patchwork-bootloader"
-  - "@inkandswitch/patchwork-elements"
-  - "@inkandswitch/patchwork-filesystem"
-  - "@inkandswitch/patchwork-providers"
-  - "@inkandswitch/patchwork"
-  - "@inkandswitch/patchwork-e2e"
-  - "@inkandswitch/patchwork-pkg-base"
   - "@inkandswitch/*"
   - "@chee/*"
+  - "@automerge/*"
