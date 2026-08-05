@@ -23,6 +23,7 @@ jobs:
       - uses: actions/checkout@v7
         with:
           token: ${{ secrets.PATCHWORK_CROW_TOKEN }}
+          fetch-depth: 0
 
       - uses: pnpm/action-setup@v4
         with:
@@ -36,7 +37,19 @@ jobs:
       - name: update
         id: update
         run: |
+          git config user.name "patchcrow[caw][crow][bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git checkout -B update-patchwork-packages origin/main
+          if git rev-parse --verify -q origin/update-patchwork-packages > /dev/null; then
+            keep="$(git log --reverse --no-merges --format='%H %ae' origin/main..origin/update-patchwork-packages \
+              | grep -v ' 41898282+github-actions\[bot\]@users.noreply.github.com$' \
+              | cut -d' ' -f1)"
+            if [[ -n "$keep" ]]; then
+              echo "keeping:"
+              git log --no-walk --format='%h %s' $keep
+              git cherry-pick $keep
+            fi
+          fi
           pnpm update --latest \
             @inkandswitch/patchwork \
             @inkandswitch/patchwork-pkg-base \
@@ -46,8 +59,6 @@ jobs:
       - name: commit
         if: steps.update.outputs.changed == 'true'
         run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git commit -am "update patchwork packages"
           git push --force origin update-patchwork-packages
 

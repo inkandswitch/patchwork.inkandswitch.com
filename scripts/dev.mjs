@@ -227,7 +227,6 @@ if (base) {
 	ensureBase(base)
 }
 
-build("pnpm", ["exec", "vite", "build"], root, env)
 if (core) run("core", "pnpm", ["watch"], core, watchEnv)
 if (base) run("base", "pnpm", ["watch"], base, watchEnv)
 const site = run("site", "pnpm", ["exec", "vite"], root, watchEnv)

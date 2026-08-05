@@ -22,7 +22,6 @@ showLoadingAnimation()
 window.patchwork = await setup({
 	packageListURL,
 	accountKey: "tinyPatchworkAccountUrl",
-	name: "patchwork",
 }).catch(error => {
 	showErrorScreen(error, {contact: "chee@inkandswitch.com"})
 	throw error
