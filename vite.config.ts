@@ -2,12 +2,14 @@ import {defineConfig} from "vite"
 import {dirname, join} from "node:path"
 import {fileURLToPath} from "node:url"
 import {base, core, environment, patchwork} from "./vite/environment.ts"
+import {dedupe} from "./vite/dedupe.ts"
 
 const root = dirname(fileURLToPath(import.meta.url))
 
 export default defineConfig({
 	plugins: [
 		environment(),
+		dedupe(),
 		patchwork({
 			title: "Patchwork",
 			description: "local-first collaborative malleable software environment",

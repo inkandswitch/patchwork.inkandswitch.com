@@ -1,3 +1,7 @@
+overrides:
+  "@automerge/automerge-subduction": "link:/Users/chee/soft/inkandswitch/subduction/automerge_subduction_js"
+  "@automerge/automerge": "link:/Users/chee/soft/automerge/automerge-classic"
+  "@keyhive/keyhive": "link:./vendor/keyhive-noop"
 allowBuilds:
   cbor-extract: true
   esbuild: true
