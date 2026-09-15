@@ -47,7 +47,20 @@ jobs:
             if [[ -n "$keep" ]]; then
               echo "keeping:"
               git log --no-walk --format='%h %s' $keep
-              git cherry-pick $keep
+              for commit in $keep; do
+                if ! git cherry-pick "$commit"; then
+                  conflicts="$(git diff --name-only --diff-filter=U)"
+                  if [[ "$conflicts" != "pnpm-lock.yaml" ]]; then
+                    echo "unresolvable conflict in: $conflicts"
+                    git cherry-pick --abort
+                    exit 1
+                  fi
+                  echo "resolving pnpm-lock.yaml conflict with pnpm install"
+                  pnpm install
+                  git add pnpm-lock.yaml
+                  git -c core.editor=true cherry-pick --continue
+                fi
+              done
             fi
           fi
           pnpm update --latest \
