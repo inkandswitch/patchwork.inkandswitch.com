@@ -41,13 +41,14 @@ export default defineConfig({
 			description: "local-first collaborative malleable software environment",
 			storagePrefix: "patchwork.inkandswitch.com",
 			server: core ? {fs: {allow: [root, core]}} : undefined,
-			syncServers:
+			keyhive:
 				process.env.KEYHIVE === "true"
 					? {
-							keyhive:
+							syncServer:
 								process.env.KEYHIVE_SYNC_SERVER === "true"
 									? "keyhive"
 									: "subduction",
+							idFactory: false
 						}
 					: undefined,
 			themeColor: {light: "#f8f8f8", dark: "#181e24"},
