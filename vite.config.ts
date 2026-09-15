@@ -21,9 +21,13 @@ function repoAutomergeWasm(): Plugin {
 	return {
 		name: "repo-automerge-wasm",
 		writeBundle(options) {
+			const outputPath = resolve(
+				root,
+				options.file ?? join(options.dir ?? "dist", "index.html")
+			)
 			copyFileSync(
 				automergeWasm,
-				join(resolve(root, options.dir ?? "dist"), "automerge.wasm")
+				join(dirname(outputPath), "automerge.wasm")
 			)
 		},
 	}
