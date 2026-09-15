@@ -1,9 +1,33 @@
-import {defineConfig} from "vite"
-import {dirname, join} from "node:path"
+import {copyFileSync} from "node:fs"
+import {createRequire} from "node:module"
+import {dirname, join, resolve} from "node:path"
 import {fileURLToPath} from "node:url"
+import {defineConfig, type Plugin} from "vite"
 import {base, core, environment, patchwork} from "./vite/environment.ts"
 
 const root = dirname(fileURLToPath(import.meta.url))
+const require = createRequire(import.meta.url)
+const patchworkRequire = createRequire(
+	fileURLToPath(import.meta.resolve("@inkandswitch/patchwork"))
+)
+const automergeRepoRequire = createRequire(
+	patchworkRequire.resolve("@automerge/automerge-repo")
+)
+const automergeWasm = automergeRepoRequire.resolve(
+	"@automerge/automerge/automerge.wasm"
+)
+
+function repoAutomergeWasm(): Plugin {
+	return {
+		name: "repo-automerge-wasm",
+		writeBundle(options) {
+			copyFileSync(
+				automergeWasm,
+				join(resolve(root, options.dir ?? "dist"), "automerge.wasm")
+			)
+		},
+	}
+}
 
 export default defineConfig({
 	plugins: [
@@ -11,6 +35,7 @@ export default defineConfig({
 		patchwork({
 			title: "Patchwork",
 			description: "local-first collaborative malleable software environment",
+			storagePrefix: "patchwork.inkandswitch.com",
 			server: core ? {fs: {allow: [root, core]}} : undefined,
 			syncServers:
 				process.env.KEYHIVE === "true"
@@ -35,5 +60,6 @@ export default defineConfig({
 				packageListURL: process.env.PATCHWORK_SYSTEM_PACKAGE_LIST_URL,
 			},
 		}),
+		repoAutomergeWasm(),
 	],
 })
