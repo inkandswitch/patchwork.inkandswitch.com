@@ -48,7 +48,7 @@ jobs:
               echo "keeping:"
               git log --no-walk --format='%h %s' $keep
               for commit in $keep; do
-                if ! git cherry-pick "$commit"; then
+                if ! git cherry-pick --allow-empty --keep-redundant-commits "$commit"; then
                   conflicts="$(git diff --name-only --diff-filter=U)"
                   if [[ "$conflicts" != "pnpm-lock.yaml" ]]; then
                     echo "unresolvable conflict in: $conflicts"
