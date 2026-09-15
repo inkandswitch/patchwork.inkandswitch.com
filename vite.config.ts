@@ -48,7 +48,7 @@ export default defineConfig({
 								process.env.KEYHIVE_SYNC_SERVER === "true"
 									? "keyhive"
 									: "subduction",
-							idFactory: false
+							useIdFactory: false
 						}
 					: undefined,
 			themeColor: {light: "#f8f8f8", dark: "#181e24"},
