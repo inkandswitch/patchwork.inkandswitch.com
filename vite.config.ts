@@ -61,6 +61,11 @@ export default defineConfig({
 					? {from: join(base, "static-dist"), watch: ".watch-ready"}
 					: "@inkandswitch/patchwork-pkg-base",
 			],
+			// vite's cors middleware adds `Vary: Origin`, which netlify doesn't
+			// send; the service worker then caches the crossorigin wasm preloads
+			// under that Vary and offline boot misses them. The patchwork plugin
+			// already sends `Access-Control-Allow-Origin: *`.
+			preview: {cors: false},
 			buildInfo: {
 				packageListURL: process.env.PATCHWORK_SYSTEM_PACKAGE_LIST_URL,
 			},
