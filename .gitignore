@@ -1,6 +1,7 @@
 /dist/
 .pushwork/
 node_modules/
+playright-report/
 
 # Local Netlify folder
 .netlify
