@@ -4,10 +4,10 @@
 	"private": true,
 	"dependencies": {
 		"@inkandswitch/patchwork": "^0.8.6",
-		"@inkandswitch/patchwork-pkg-base": "^0.0.82"
+		"@inkandswitch/patchwork-pkg-base": "^0.0.84"
 	},
 	"devDependencies": {
-		"@inkandswitch/patchwork-e2e": "^0.2.0",
+		"@inkandswitch/patchwork-e2e": "^0.2.2",
 		"vite": "^8.1.5"
 	},
 	"scripts": {
