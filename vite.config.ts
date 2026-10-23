@@ -5,6 +5,14 @@ import {base, core, environment, patchwork} from "./vite/environment.ts"
 
 const root = dirname(fileURLToPath(import.meta.url))
 
+// The site syncs through its own server (netlify/server), which peers with
+// the main one. Every deploy, previews too, dials the site's main URL: that
+// host is the server's service name. Without Netlify (a bare `pnpm dev`)
+// there is no server here, so the main one it is.
+const subductionSyncServer =
+	process.env.SUBDUCTION_SYNC_SERVER ??
+	(process.env.URL && `${process.env.URL.replace(/^http/, "ws")}/sync-server`)
+
 export default defineConfig({
 	plugins: [
 		environment(),
@@ -12,6 +20,9 @@ export default defineConfig({
 			title: "Patchwork",
 			description: "local-first collaborative malleable software environment",
 			storagePrefix: "patchwork.inkandswitch.com",
+			syncServers: subductionSyncServer
+				? {subduction: subductionSyncServer}
+				: undefined,
 			server: core ? {fs: {allow: [root, core]}} : undefined,
 			keyhive:
 				process.env.KEYHIVE === "true"
@@ -20,7 +31,7 @@ export default defineConfig({
 								process.env.KEYHIVE_SYNC_SERVER === "true"
 									? "keyhive"
 									: "subduction",
-							useIdFactory: false
+							useIdFactory: false,
 						}
 					: undefined,
 			themeColor: {light: "#f8f8f8", dark: "#181e24"},
