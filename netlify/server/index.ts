@@ -2,10 +2,11 @@
  * A subduction sync server for patchwork, run as a Netlify Server.
  *
  * Clients connect with a WebSocket to `/sync-server` and find this server by
- * discovery: the service name they sign for is the host they dialled, which is
- * the site's main one, so its own key doesn't need to be known in advance.
+ * discovery: the service name they sign for is the host they dialled, so its
+ * own key doesn't need to be known in advance.
  *
- * Everything the server holds is kept in Netlify Blobs. Without a blobs
+ * Everything the server holds is kept in Netlify Blobs, in one store for the
+ * whole site. Without a blobs
  * environment (plain `node`, say) it keeps it in memory instead, and says so.
  */
 import {
@@ -34,8 +35,6 @@ import {
 export const config: Config = {
 	path: "/sync-server",
 }
-
-const SIGNER_KEY = "signer"
 
 /**
  * Commits and fragments are each stored as one blob: the signed metadata and
@@ -205,29 +204,18 @@ function fromHex(hex: string) {
 	return Uint8Array.from(hex.match(/../g) ?? [], byte => parseInt(byte, 16))
 }
 
-/**
- * The server keeps one identity across restarts and instances. Whichever
- * instance gets there first writes it, and the others read that one back.
- */
-async function loadSigner(store: Store) {
-	const key = crypto.getRandomValues(new Uint8Array(32))
-	await store.set(SIGNER_KEY, key.buffer, {onlyIfNew: true})
-	const saved = await store.get(SIGNER_KEY, {type: "arrayBuffer"})
-	return MemorySigner.fromBytes(new Uint8Array(saved))
-}
-
-async function open() {
-	let store: Store
+function openStorage(): SedimentreeStorage {
 	try {
-		store = getStore({name: "subduction", consistency: "strong"})
+		return new BlobsStorage(
+			getStore({name: "subduction", consistency: "strong"})
+		)
 	} catch (error) {
 		console.warn(
 			"[subduction] no Netlify Blobs here, so nothing will outlive this process:",
 			error
 		)
-		return {signer: new MemorySigner(), storage: new MemoryStorage()}
+		return new MemoryStorage()
 	}
-	return {signer: await loadSigner(store), storage: new BlobsStorage(store)}
 }
 
 /**
@@ -434,10 +422,12 @@ const UPSTREAM_TIMEOUT = 10_000
 const PUSH_DELAY = 250
 
 const upstream = new Upstream(UPSTREAM_URL)
-const {signer, storage} = await open()
+// Each process gets an identity of its own. Production, previews and every
+// instance share one store, and they mustn't look like one peer upstream.
+const signer = new MemorySigner()
 const subduction = new Subduction({
 	signer,
-	storage: pushingWrites(storage),
+	storage: pushingWrites(openStorage()),
 	policy: {
 		async authorizeConnect() {},
 		async authorizePut() {},
@@ -457,8 +447,11 @@ onShutdown(() => subduction.disconnectAll())
 
 export default async (request: Request) => {
 	// The request's own URL and Host are the proxy's, not the one the client
-	// dialled. Every build dials the site's main URL (see vite.config.ts).
-	const host = new URL(getContext().site.url ?? request.url).host
+	// dialled, so each build says which host it dials (see vite.config.ts).
+	const url = new URL(request.url)
+	const host =
+		url.searchParams.get("host") ??
+		new URL(getContext().site.url ?? request.url).host
 	if (request.headers.get("upgrade")?.toLowerCase() != "websocket") {
 		return new Response(
 			`subduction sync server\nservice: ${host}\npeer: ${signer.peerId()}\nupstream: ${UPSTREAM_URL}\n`,
