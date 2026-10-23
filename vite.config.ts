@@ -1,9 +1,47 @@
+import {copyFile} from "node:fs/promises"
 import {dirname, join} from "node:path"
 import {fileURLToPath} from "node:url"
-import {defineConfig} from "vite"
+import {defineConfig, type Plugin} from "vite"
 import {base, core, environment, patchwork} from "./vite/environment.ts"
 
 const root = dirname(fileURLToPath(import.meta.url))
+
+// The site syncs through its own server (netlify/server), which peers with
+// the main one. Each deploy dials its own, and says which host it dialled,
+// since that is the service name and the server can't see it for the proxy.
+// Without Netlify (a bare `pnpm dev`) there is no server here, so the main
+// one it is.
+const site =
+	process.env.CONTEXT == "production"
+		? process.env.URL
+		: (process.env.DEPLOY_PRIME_URL ?? process.env.URL)
+const subductionSyncServer =
+	process.env.SUBDUCTION_SYNC_SERVER ??
+	(site &&
+		`${site.replace(/^http/, "ws")}/sync-server?host=${new URL(site).host}`)
+
+/**
+ * Netlify puts rewrites ahead of the sync server, so patchwork's SPA fallback
+ * (`/* /index.html 200`) would answer /sync-server with the app. Routing is
+ * all in the hash anyway, so the fallback goes, and a 404.html that is the
+ * app covers any other path.
+ */
+function syncServerRoute(): Plugin {
+	let outDir = ""
+	return {
+		name: "sync-server-route",
+		apply: "build",
+		configResolved(config) {
+			outDir = config.build.outDir
+		},
+		generateBundle(_, bundle) {
+			delete bundle["_redirects"]
+		},
+		async closeBundle() {
+			await copyFile(join(outDir, "index.html"), join(outDir, "404.html"))
+		},
+	}
+}
 
 export default defineConfig({
 	plugins: [
@@ -12,6 +50,9 @@ export default defineConfig({
 			title: "Patchwork",
 			description: "local-first collaborative malleable software environment",
 			storagePrefix: "patchwork.inkandswitch.com",
+			syncServers: subductionSyncServer
+				? {subduction: subductionSyncServer}
+				: undefined,
 			server: core ? {fs: {allow: [root, core]}} : undefined,
 			keyhive:
 				process.env.KEYHIVE === "true"
@@ -20,7 +61,7 @@ export default defineConfig({
 								process.env.KEYHIVE_SYNC_SERVER === "true"
 									? "keyhive"
 									: "subduction",
-							useIdFactory: false
+							useIdFactory: false,
 						}
 					: undefined,
 			themeColor: {light: "#f8f8f8", dark: "#181e24"},
@@ -42,5 +83,6 @@ export default defineConfig({
 				packageListURL: process.env.PATCHWORK_SYSTEM_PACKAGE_LIST_URL,
 			},
 		}),
+		syncServerRoute(),
 	],
 })
