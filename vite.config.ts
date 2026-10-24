@@ -24,7 +24,9 @@ const subductionSyncServer =
  * Netlify puts rewrites ahead of the sync server, so patchwork's SPA fallback
  * (`/* /index.html 200`) would answer /sync-server with the app. Routing is
  * all in the hash anyway, so the fallback goes, and a 404.html that is the
- * app covers any other path.
+ * app covers any other path. The rest of _redirects stays: it sends the
+ * fixed paths patchwork's files used to have (/automerge.wasm,
+ * /packages/…) to the hashed names they have now.
  */
 function syncServerRoute(): Plugin {
 	let outDir = ""
@@ -35,7 +37,12 @@ function syncServerRoute(): Plugin {
 			outDir = config.build.outDir
 		},
 		generateBundle(_, bundle) {
-			delete bundle["_redirects"]
+			const redirects = bundle["_redirects"]
+			if (redirects?.type != "asset") return
+			redirects.source = String(redirects.source)
+				.split("\n")
+				.filter(line => !line.startsWith("/* "))
+				.join("\n")
 		},
 		async closeBundle() {
 			await copyFile(join(outDir, "index.html"), join(outDir, "404.html"))
