@@ -4,13 +4,13 @@
 	"private": true,
 	"dependencies": {
 		"@automerge/automerge-subduction": "0.16.1",
-		"@inkandswitch/patchwork": "^0.8.7",
-		"@inkandswitch/patchwork-pkg-base": "^0.0.84",
+		"@inkandswitch/patchwork": "^0.8.8",
+		"@inkandswitch/patchwork-pkg-base": "^0.0.85",
 		"@netlify/blobs": "^11.1.6",
 		"@netlify/server": "^0.1.3"
 	},
 	"devDependencies": {
-		"@inkandswitch/patchwork-e2e": "^0.2.3",
+		"@inkandswitch/patchwork-e2e": "^0.2.4",
 		"vite": "^8.1.5"
 	},
 	"scripts": {
