@@ -8,4 +8,4 @@ minimumReleaseAgeExclude:
   - '@jsr/chee__*'
 overrides:
   "@automerge/automerge": jsr:@chee/automerge-js@0.0.0-experimental.1
-  "@automerge/automerge-subduction": jsr:@chee/automerge-subduction@0.0.0-experimental.0
+  "@automerge/automerge-subduction": jsr:@chee/automerge-subduction@0.0.0-experimental.1
