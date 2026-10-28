@@ -5,6 +5,6 @@ minimumReleaseAgeExclude:
   - "@inkandswitch/*"
   - "@chee/*"
   - "@automerge/*"
-  - '@jsr/chee__automerge-js@0.0.0-experimental.0'
+  - '@jsr/chee__*'
 overrides:
-  "@automerge/automerge": jsr:@chee/automerge-js@0.0.0-experimental.0
+  "@automerge/automerge": jsr:@chee/automerge-js@0.0.0-experimental.1
