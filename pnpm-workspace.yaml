@@ -6,4 +6,4 @@ minimumReleaseAgeExclude:
   - "@chee/*"
   - "@automerge/*"
 overrides:
-  "@automerge/automerge": 3.4.1
+  "@automerge/automerge": 3.5.0
