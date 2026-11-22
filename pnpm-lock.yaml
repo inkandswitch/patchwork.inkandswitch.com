@@ -12,8 +12,8 @@ importers:
   .:
     dependencies:
       '@inkandswitch/patchwork':
-        specifier: ^0.10.3
-        version: 0.10.3(@types/node@20.19.43)(solid-js@1.9.20)(vite@8.3.8(@types/node@20.19.43))(ws@8.23.0)
+        specifier: ^0.10.4
+        version: 0.10.4(@types/node@20.19.43)(solid-js@1.9.20)(vite@8.3.8(@types/node@20.19.43))(ws@8.23.0)
       '@inkandswitch/patchwork-pkg-base':
         specifier: ^0.0.172
         version: 0.0.172
@@ -530,8 +530,8 @@ packages:
     peerDependencies:
       '@automerge/automerge-repo': '*'
 
-  '@inkandswitch/patchwork@0.10.3':
-    resolution: {integrity: sha512-NnHTTW6cxGyPI61VD6NcdKBYNiL1hT2KejY6kWPFF1iGHCzPz2HyA1O897hIsa26AOEhhbw/XSrUYV8piRucBA==}
+  '@inkandswitch/patchwork@0.10.4':
+    resolution: {integrity: sha512-h4nMH7ud2CkJfP5OGUQSaUeYH5H2xhGMrqwILZScoK6DzVyMjexVlL24JDM4MVwre6nebbreZcUWYfNroNQnKg==}
 
   '@keyhive/keyhive@0.3.0-alpha.1':
     resolution: {integrity: sha512-2MsnK989GTGR+j+2LwyiekeaXYAWcBUY5Em4b6nVOLRmLJn/rtdgaB9EfOi52gkxW0TqAi3njrHXX0eJBdoxXA==}
@@ -1530,7 +1530,7 @@ snapshots:
     dependencies:
       '@automerge/automerge-repo': '@chee/automerge-repo@2.6.0-rabbit.1'
 
-  '@inkandswitch/patchwork@0.10.3(@types/node@20.19.43)(solid-js@1.9.20)(vite@8.3.8(@types/node@20.19.43))(ws@8.23.0)':
+  '@inkandswitch/patchwork@0.10.4(@types/node@20.19.43)(solid-js@1.9.20)(vite@8.3.8(@types/node@20.19.43))(ws@8.23.0)':
     dependencies:
       '@ark-0.6/automerge-repo': '@automerge/automerge-repo@2.6.0-subduction.48'
       '@ark-0.6/automerge-repo-keyhive': '@automerge/automerge-repo-keyhive@0.6.0-alpha.1(ws@8.23.0)'
