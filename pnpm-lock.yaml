@@ -15,8 +15,8 @@ importers:
         specifier: ^0.11.0
         version: 0.11.0(@types/node@20.19.43)(solid-js@1.9.20)(vite@8.3.8(@types/node@20.19.43))(ws@8.23.0)
       '@inkandswitch/patchwork-pkg-base':
-        specifier: ^0.0.176
-        version: 0.0.176
+        specifier: ^0.0.179
+        version: 0.0.179
     devDependencies:
       '@inkandswitch/patchwork-e2e':
         specifier: ^0.2.4
@@ -515,8 +515,8 @@ packages:
       '@automerge/automerge': 3.5.0
       '@automerge/automerge-repo': '*'
 
-  '@inkandswitch/patchwork-pkg-base@0.0.176':
-    resolution: {integrity: sha512-wPbjlkGUVy39nRT76jMp8TQd7wEE+VT5ArRquxFNgdH8sDWHENbYGVmQLUMtZibYWtXQUjO6dpfWcbx4fq8XeQ==}
+  '@inkandswitch/patchwork-pkg-base@0.0.179':
+    resolution: {integrity: sha512-1Uwhb/R+ZyQfeAVLF3GzUiqt2YoLEMn90FqY2GNN0bgypEcfw46sfrpNC7HXQr+2J5sg1fvVXwNPNHuCLpEOGQ==}
 
   '@inkandswitch/patchwork-plugins@1.2.7':
     resolution: {integrity: sha512-i5mOHa/P296lOw381aEc1lzqr/0aXfdSokH7B1UyoFvBtrJIr5txP0Ttd90/4sIFzeIcV1rABeIW7BoN4InckQ==}
@@ -1511,7 +1511,7 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  '@inkandswitch/patchwork-pkg-base@0.0.176': {}
+  '@inkandswitch/patchwork-pkg-base@0.0.179': {}
 
   '@inkandswitch/patchwork-plugins@1.2.7(@automerge/automerge@3.5.0)(@chee/automerge-repo@2.6.0-rabbit.1)(@inkandswitch/patchwork-filesystem@0.2.20(@automerge/automerge@3.5.0)(@chee/automerge-repo@2.6.0-rabbit.1))':
     dependencies:
