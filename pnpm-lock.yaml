@@ -15,12 +15,12 @@ importers:
         specifier: ^0.11.1
         version: 0.11.1(@types/node@20.19.43)(solid-js@1.9.20)(vite@8.3.8(@types/node@20.19.43))(ws@8.23.0)
       '@inkandswitch/patchwork-pkg-base':
-        specifier: ^0.0.188
-        version: 0.0.188
+        specifier: ^0.0.191
+        version: 0.0.191
     devDependencies:
       '@inkandswitch/patchwork-e2e':
-        specifier: ^0.2.4
-        version: 0.2.4
+        specifier: ^0.2.5
+        version: 0.2.5
       vite:
         specifier: ^8.3.8
         version: 8.3.8(@types/node@20.19.43)
@@ -133,8 +133,8 @@ packages:
     resolution: {integrity: sha512-k4TltdvFIw0MP1V6+vXUV0GeVu/Ief91Rh8PyHWE1NQ4ajd9QtZ+FlFZjbmS36TrzsVoKthPhPgupIfiXY7TlQ==}
     engines: {node: '>=22.13'}
 
-  '@codemirror/commands@6.11.1':
-    resolution: {integrity: sha512-O/4hG3SC1YwcmQ0d2UVNDs+AsaNWd1iHVxbTeEBuqH+6bExAiPK3iS/BvpY6rZGURALv4ZD3sIgcCmRvw3ehBg==}
+  '@codemirror/commands@6.11.2':
+    resolution: {integrity: sha512-NbH6Q9lmcXvf9s5/mMJIwL2Hjl2NEdsN/dDlezGnaFOQgNZ59dT7ndKUf21/PIjJacD/Ti2Ifi4TsBkO6WHvsg==}
 
   '@codemirror/language@6.13.1':
     resolution: {integrity: sha512-zfvU2r3TyylQLMj/te+5CnQ0rSqZi8B1oTCBbQkagcLW4Xc6imab6qN+pEJhsuNOLaJqiRyBXp9UhWA1DhVvDw==}
@@ -145,8 +145,8 @@ packages:
   '@codemirror/streamparser@6.0.0':
     resolution: {integrity: sha512-JTFPF6xrfjt0mnfGPgzcLiMwYmvIyNaoizp8BYzv8FE8KrT6GBGDZ190rtt+O7Wke3gG/MFHyiY9YGNeimof4w==}
 
-  '@codemirror/view@6.43.15':
-    resolution: {integrity: sha512-HHsfpqFeHyXLs983pSRe38Xajs0vFWZQ2BuX0m7Ki8w3jZ5iD8cuR3lBz2/5/X53Dhf32SBHKh6rtSTB6tKeGw==}
+  '@codemirror/view@6.44.2':
+    resolution: {integrity: sha512-7yxTh7+iCbxIV9QCJAVlkYjWV/TCHD0zmLIaIR3NOb47YpCWwVUuFUnHwkRC3z+8cXNgeJzrCy4QtlR3fVt5kg==}
 
   '@emnapi/core@2.0.0-beta.2':
     resolution: {integrity: sha512-MzCVoWtcg4Pm2B3je5mMvYMvj3MmBKw+fU7vbsJc9/iT8ip6/eYIHo/Dsm/mr+wsHB6SEyJDuxB09Yy6r/8+4A==}
@@ -483,8 +483,8 @@ packages:
       '@automerge/vanillajs':
         optional: true
 
-  '@inkandswitch/patchwork-e2e@0.2.4':
-    resolution: {integrity: sha512-W7aESMU3ffGidZ2XIGiNb+NwApw+9DOz61+VLmhO/ExdCtLkw4A55XiUMQGHJ7QqZbxKMwUXU+85Z11IFj5fdg==}
+  '@inkandswitch/patchwork-e2e@0.2.5':
+    resolution: {integrity: sha512-6TOqZRh0qJEpTp8e40Z8is091FFqn5m1L6TPAmWLmv5X75A8u2DpcHmwgX3/Ta7vLpe4LmM+W1sTrnSz/8I7bA==}
     hasBin: true
 
   '@inkandswitch/patchwork-elements@6.2.3':
@@ -515,8 +515,8 @@ packages:
       '@automerge/automerge': 3.5.0
       '@automerge/automerge-repo': '*'
 
-  '@inkandswitch/patchwork-pkg-base@0.0.188':
-    resolution: {integrity: sha512-61k1Cpo3xEAinJNxuWZIunJHm4RFFkoKot6j+Y3ecywH49Ye6/RerInwhMaUntPKcSrgcr6Vg73+fw93BJc7Jw==}
+  '@inkandswitch/patchwork-pkg-base@0.0.191':
+    resolution: {integrity: sha512-RW+SdmrUq848ibgvSBQt1CDti79Q6dl7TDm/q+1hPg3rpDvKEI31g67cxfKgjT0MHX+SNCCLpGOLXbRweRErjA==}
 
   '@inkandswitch/patchwork-plugins@1.2.9':
     resolution: {integrity: sha512-wpanzMiqrqMw1b0EWBB9RNSxpiKB4HSwRrkKuW653CfQT0+7M3bcBBsShfER+ADxrVvpg8Y+0YtqoCGVRDg1ug==}
@@ -539,14 +539,14 @@ packages:
   '@keyhive/keyhive@0.6.0':
     resolution: {integrity: sha512-Y9Vikg1EWAxs7doLgKVNY0qxqANmiP0O5UT25G+UAqNY4FkClEjH3VVE2iuzAaof0cZ9lP0bIvw8iL49pqoeRw==}
 
-  '@lezer/common@1.5.6':
-    resolution: {integrity: sha512-NZxu3q49ck+YYbEJPuIPIyFP37XneBvzPIarBHEXBLBVfkZqQieZ/Y2boYnGNYtmjpOZLnAKs/lwqtmDpi365w==}
+  '@lezer/common@1.5.7':
+    resolution: {integrity: sha512-3+3PN+M/3xSjrlQz8/wBPOl+JYGJ+G37ZszHfnhphFwj41qPUPxsz4WEic3ZyVpL23rX1qefaGqz0lA7jGUqwg==}
 
   '@lezer/highlight@1.2.5':
     resolution: {integrity: sha512-O1GMVKgtf5YspFaRzpmqkVgMtIk2HG9uMAbH6wdAIdNh3TVzCsch/+cRi+6l2//UGDKe6NB9BW3cvuR5ezMQ0w==}
 
-  '@lezer/lr@1.4.12':
-    resolution: {integrity: sha512-On9HU4oMMiHPMkQDgoTnGahjgG5n/MkN38CgG77sMraKLL+3JBbeQNi1FcCXV9QRqwF9/BUXP3caHyJC1fBOTQ==}
+  '@lezer/lr@1.4.13':
+    resolution: {integrity: sha512-Ez6qF9rXdnR/7hTcA6kHq1uTcPV+17hyUFjiHBVYNi0a81TgbkC0SwiNvxcuUMkvX7phuhTHo+QAXh9L2kjGdg==}
 
   '@marijn/find-cluster-break@1.0.4':
     resolution: {integrity: sha512-Wy0V7+SGUjnF9/TkiM1hKVDPj7jKXduPNboMVtHTA8dySMURWqfg/JZ9E2Sq8JgSJmkl7k7Qe9FLeMSrSraWmQ==}
@@ -1221,21 +1221,21 @@ snapshots:
       - supports-color
       - utf-8-validate
 
-  '@codemirror/commands@6.11.1':
+  '@codemirror/commands@6.11.2':
     dependencies:
       '@codemirror/language': 6.13.1
       '@codemirror/state': 6.7.6
-      '@codemirror/view': 6.43.15
-      '@lezer/common': 1.5.6
+      '@codemirror/view': 6.44.2
+      '@lezer/common': 1.5.7
 
   '@codemirror/language@6.13.1':
     dependencies:
       '@codemirror/state': 6.7.6
       '@codemirror/streamparser': 6.0.0
-      '@codemirror/view': 6.43.15
-      '@lezer/common': 1.5.6
+      '@codemirror/view': 6.44.2
+      '@lezer/common': 1.5.7
       '@lezer/highlight': 1.2.5
-      '@lezer/lr': 1.4.12
+      '@lezer/lr': 1.4.13
       style-mod: 4.1.5
 
   '@codemirror/state@6.7.6':
@@ -1244,7 +1244,7 @@ snapshots:
 
   '@codemirror/streamparser@6.0.0': {}
 
-  '@codemirror/view@6.43.15':
+  '@codemirror/view@6.44.2':
     dependencies:
       '@codemirror/state': 6.7.6
       crelt: 1.0.7
@@ -1457,10 +1457,10 @@ snapshots:
       '@automerge/automerge-repo-network-websocket': '@chee/automerge-repo-network-websocket@2.6.0-rabbit.1'
       '@automerge/automerge-repo-storage-indexeddb': '@chee/automerge-repo-storage-indexeddb@2.6.0-rabbit.1'
       '@automerge/automerge-subduction': 0.21.0
-      '@codemirror/commands': 6.11.1
+      '@codemirror/commands': 6.11.2
       '@codemirror/language': 6.13.1
       '@codemirror/state': 6.7.6
-      '@codemirror/view': 6.43.15
+      '@codemirror/view': 6.44.2
       '@inkandswitch/patchwork-elements': 6.2.3(@automerge/automerge-repo-keyhive@0.8.0-alpha.1(ws@8.23.0))(@automerge/automerge@3.5.0)(@chee/automerge-repo@2.6.0-rabbit.1)(@inkandswitch/patchwork-filesystem@0.2.23(@automerge/automerge@3.5.0)(@chee/automerge-repo@2.6.0-rabbit.1))(@inkandswitch/patchwork-plugins@1.2.9(@automerge/automerge@3.5.0)(@chee/automerge-repo@2.6.0-rabbit.1)(@inkandswitch/patchwork-filesystem@0.2.23(@automerge/automerge@3.5.0)(@chee/automerge-repo@2.6.0-rabbit.1)))(@inkandswitch/patchwork-providers@0.5.5(@chee/automerge-repo@2.6.0-rabbit.1))(solid-js@1.9.20)
       '@inkandswitch/patchwork-filesystem': 0.2.23(@automerge/automerge@3.5.0)(@chee/automerge-repo@2.6.0-rabbit.1)
       '@inkandswitch/patchwork-plugins': 1.2.9(@automerge/automerge@3.5.0)(@chee/automerge-repo@2.6.0-rabbit.1)(@inkandswitch/patchwork-filesystem@0.2.23(@automerge/automerge@3.5.0)(@chee/automerge-repo@2.6.0-rabbit.1))
@@ -1484,7 +1484,7 @@ snapshots:
       - supports-color
       - utf-8-validate
 
-  '@inkandswitch/patchwork-e2e@0.2.4':
+  '@inkandswitch/patchwork-e2e@0.2.5':
     dependencies:
       '@playwright/test': 1.59.1
 
@@ -1511,7 +1511,7 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  '@inkandswitch/patchwork-pkg-base@0.0.188': {}
+  '@inkandswitch/patchwork-pkg-base@0.0.191': {}
 
   '@inkandswitch/patchwork-plugins@1.2.9(@automerge/automerge@3.5.0)(@chee/automerge-repo@2.6.0-rabbit.1)(@inkandswitch/patchwork-filesystem@0.2.23(@automerge/automerge@3.5.0)(@chee/automerge-repo@2.6.0-rabbit.1))':
     dependencies:
@@ -1574,15 +1574,15 @@ snapshots:
 
   '@keyhive/keyhive@0.6.0': {}
 
-  '@lezer/common@1.5.6': {}
+  '@lezer/common@1.5.7': {}
 
   '@lezer/highlight@1.2.5':
     dependencies:
-      '@lezer/common': 1.5.6
+      '@lezer/common': 1.5.7
 
-  '@lezer/lr@1.4.12':
+  '@lezer/lr@1.4.13':
     dependencies:
-      '@lezer/common': 1.5.6
+      '@lezer/common': 1.5.7
 
   '@marijn/find-cluster-break@1.0.4': {}
 
